@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Classic Friends Admin</title>
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="login" id="login">
+    <form class="login-card" id="login-form">
+      <img src="/assets/logo.svg" alt="">
+      <h1>Classic Friends admin</h1>
+      <p>Enter the admin token from your server configuration (<code>ADMIN_TOKEN</code>, default <code>classicfriends-admin</code>).</p>
+      <input class="input" id="token" type="password" placeholder="Admin token" autocomplete="current-password">
+      <button class="btn primary" type="submit">Sign in</button>
+      <div class="err" id="login-err"></div>
+    </form>
+  </div>
+
+  <div class="shell hidden" id="shell">
+    <aside class="side">
+      <a class="brand" href="#dashboard"><img src="/assets/logo.svg" alt=""><span>Classic Friends <em>admin</em></span></a>
+      <nav>
+        <a href="#dashboard" data-page="dashboard">📊 Dashboard</a>
+        <a href="#users" data-page="users">👥 Users</a>
+        <a href="#rooms" data-page="rooms">🎤 Live rooms</a>
+        <a href="#reports" data-page="reports">🚩 Reports <span class="pill" id="rep-count"></span></a>
+        <a href="#gifts" data-page="gifts">🎁 Gifts</a>
+        <a href="#banners" data-page="banners">🖼️ Banners</a>
+        <a href="#broadcast" data-page="broadcast">📣 Broadcast</a>
+      </nav>
+      <div class="side-foot"><a href="/" target="_blank">Open app ↗</a><a href="/site/" target="_blank">Website ↗</a><button id="logout">Sign out</button></div>
+    </aside>
+    <main class="main">
+      <header class="top"><h2 id="page-title">Dashboard</h2><span class="status" id="status">● live</span><button class="btn sm" id="refresh">Refresh</button></header>
+      <section class="page" id="page"></section>
+    </main>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+  <script src="/shared/catalog.js"></script>
+  <script src="/shared/avatar.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

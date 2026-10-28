@@ -1,0 +1,119 @@
+/* ============================================================
+   Classic Friends design tokens
+   One bold gradient ("Sunset Vibe") reserved for voice & action.
+   Everything else is quiet translucent plum glass.
+   ============================================================ */
+
+:root {
+  /* --- Brand palette (named) --- */
+  --midnight: #0F0B2A;      /* app background, deep violet-black */
+  --plum: #1E1540;          /* raised surfaces */
+  --plum-2: #2A1E55;        /* hover / secondary surfaces */
+  --violet: #8B5CF6;        /* primary */
+  --magenta: #F043A6;       /* accent / gifts */
+  --amber: #FFB547;         /* coins, VIP, gold */
+  --aqua: #2DD4BF;          /* live, online, speaking */
+  --rose: #FF6B8A;          /* likes, hearts */
+  --sky: #60A5FA;           /* info, links in light mode */
+  --danger: #FF5D5D;
+  --success: #34D399;
+
+  /* --- The signature gradient --- */
+  --g-vibe: linear-gradient(135deg, #8B5CF6 0%, #F043A6 55%, #FFB547 100%);
+  --g-vibe-soft: linear-gradient(135deg, rgba(139,92,246,.28), rgba(240,67,166,.22) 55%, rgba(255,181,71,.18));
+  --g-gold: linear-gradient(135deg, #FFD36E 0%, #FFB547 50%, #E08A1E 100%);
+  --g-aqua: linear-gradient(135deg, #2DD4BF, #60A5FA);
+  --g-rose: linear-gradient(135deg, #FF6B8A, #F043A6);
+  --g-violet: linear-gradient(135deg, #A78BFA, #7C3AED);
+
+  /* --- Semantic (dark default) --- */
+  --bg: var(--midnight);
+  --bg-elev: var(--plum);
+  --bg-elev-2: var(--plum-2);
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-2: rgba(255, 255, 255, 0.10);
+  --glass-3: rgba(255, 255, 255, 0.16);
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #F7F5FF;
+  --text-2: #C9C2E6;
+  --text-3: #8E86B3;
+  --text-on-brand: #FFFFFF;
+  --shadow-1: 0 6px 20px rgba(5, 2, 20, 0.45);
+  --shadow-2: 0 16px 48px rgba(5, 2, 20, 0.55);
+  --glow-violet: 0 0 0 1px rgba(139,92,246,.35), 0 8px 30px rgba(139,92,246,.35);
+  --glow-magenta: 0 8px 30px rgba(240,67,166,.45);
+  --glow-aqua: 0 0 18px rgba(45,212,191,.65);
+  --scrim: rgba(8, 5, 24, 0.72);
+
+  /* --- Type --- */
+  --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-md: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 30px;
+  --fs-4xl: 38px;
+  --lh-tight: 1.15;
+  --lh-body: 1.45;
+
+  /* --- Radii hierarchy --- */
+  --r-sheet: 28px;
+  --r-card: 20px;
+  --r-btn: 14px;
+  --r-chip: 999px;
+  --r-sm: 10px;
+
+  /* --- Spacing (4pt) --- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-7: 32px; --s-8: 40px; --s-9: 56px;
+
+  /* --- Layout --- */
+  --app-max: 480px;
+  --nav-h: 64px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(.22,.9,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --t-fast: 140ms;
+  --t-med: 240ms;
+  --t-slow: 420ms;
+
+  color-scheme: dark;
+}
+
+/* ---------- Light theme ---------- */
+:root[data-theme="light"] {
+  --bg: #F6F3FF;
+  --bg-elev: #FFFFFF;
+  --bg-elev-2: #F1ECFF;
+  --glass: rgba(26, 19, 51, 0.05);
+  --glass-2: rgba(26, 19, 51, 0.08);
+  --glass-3: rgba(26, 19, 51, 0.12);
+  --line: rgba(26, 19, 51, 0.10);
+  --line-strong: rgba(26, 19, 51, 0.18);
+  --text: #1A1333;
+  --text-2: #4B4370;
+  --text-3: #7D75A3;
+  --shadow-1: 0 6px 20px rgba(60, 40, 120, 0.12);
+  --shadow-2: 0 16px 48px rgba(60, 40, 120, 0.18);
+  --scrim: rgba(26, 19, 51, 0.55);
+  color-scheme: light;
+}
+
+/* ---------- Level tiers (badge colours) ---------- */
+:root {
+  --lv-1: linear-gradient(135deg, #7CE0A8, #34D399);     /* 1–9   */
+  --lv-10: linear-gradient(135deg, #7DD3FC, #3B82F6);    /* 10–19 */
+  --lv-20: linear-gradient(135deg, #C4B5FD, #7C3AED);    /* 20–29 */
+  --lv-30: linear-gradient(135deg, #F9A8D4, #EC4899);    /* 30–39 */
+  --lv-40: linear-gradient(135deg, #FDBA74, #F97316);    /* 40–49 */
+  --lv-50: linear-gradient(135deg, #FDE68A, #F59E0B);    /* 50–69 */
+  --lv-70: linear-gradient(135deg, #8B5CF6, #F043A6 50%, #FFB547);  /* 70+ */
+}

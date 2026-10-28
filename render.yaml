@@ -1,0 +1,20 @@
+# Render.com blueprint — in Render choose "New → Blueprint" and point it at your repo.
+services:
+  - type: web
+    name: classic-friends
+    runtime: node
+    plan: starter            # free also works for testing (sleeps when idle, no disk)
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: ADMIN_TOKEN
+        generateValue: true  # Render creates a random token — read it in the dashboard
+      - key: BOTS
+        value: "10"
+      - key: START_COINS
+        value: "200"
+    disk:
+      name: data
+      mountPath: /opt/render/project/src/server/data
+      sizeGB: 1

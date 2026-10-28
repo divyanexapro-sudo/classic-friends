@@ -1,0 +1,26 @@
+{
+  "name": "classic-friends",
+  "version": "1.0.0",
+  "description": "Classic Friends — a premium voice-room friends app (web app + realtime server + website + admin console)",
+  "main": "server/index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "build:demo": "node scripts/build-demo.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "socket.io": "^4.8.4"
+  }
+}

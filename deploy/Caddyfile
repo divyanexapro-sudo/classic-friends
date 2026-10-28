@@ -1,0 +1,9 @@
+# Alternative to Nginx + Certbot: Caddy gets HTTPS certificates by itself.
+# Install: https://caddyserver.com/docs/install  → put this file at /etc/caddy/Caddyfile → systemctl reload caddy
+app.yourdomain.com {
+    reverse_proxy 127.0.0.1:3000
+}
+yourdomain.com, www.yourdomain.com {
+    root * /opt/classic-friends/website
+    file_server
+}

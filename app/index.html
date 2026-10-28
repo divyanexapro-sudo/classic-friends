@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <title>Classic Friends — Voice rooms & friends</title>
+  <meta name="description" content="Classic Friends: live voice rooms, gifts, games and new friends — every night.">
+  <meta name="theme-color" content="#0F0B2A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/screens.css">
+</head>
+<body>
+  <div id="app">
+    <div class="splash" id="splash">
+      <div class="center">
+        <img class="logo" src="assets/logo.svg" alt="Classic Friends">
+        <div class="word">Classic Friends</div>
+        <div class="tag">Pull up a mic.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- shared product logic (same files the server uses) -->
+  <script src="../shared/catalog.js"></script>
+  <script src="../shared/avatar.js"></script>
+  <script src="../shared/engine.js"></script>
+  <script src="../shared/bots.js"></script>
+  <!-- app -->
+  <script src="js/config.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/net/mock-client.js"></script>
+  <script src="js/net/socket-client.js"></script>
+  <script src="js/voice/webrtc.js"></script>
+  <script src="js/screens/auth.js"></script>
+  <script src="js/screens/home.js"></script>
+  <script src="js/screens/room.js"></script>
+  <script src="js/screens/social.js"></script>
+  <script src="js/screens/profile.js"></script>
+  <script src="js/screens/economy.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Offline shell cache — only on https (not while developing on localhost)
+    if ('serviceWorker' in navigator && location.protocol === 'https:' && !location.hostname.includes('claude')) navigator.serviceWorker.register('sw.js').catch(() => {});
+  </script>
+</body>
+</html>

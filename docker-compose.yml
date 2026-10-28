@@ -1,0 +1,12 @@
+# docker compose up -d     → app on port 3000 (put Nginx/Caddy in front for HTTPS)
+services:
+  classic-friends:
+    build: .
+    ports: ["3000:3000"]
+    environment:
+      ADMIN_TOKEN: change-me-now
+      BOTS: "10"
+      START_COINS: "200"
+    volumes:
+      - ./server/data:/app/server/data
+    restart: unless-stopped

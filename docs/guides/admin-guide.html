@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classic Friends — Admin Console Guide</title>
+<link rel="stylesheet" href="guide.css">
+<script>document.addEventListener('DOMContentLoaded',()=>{const p=new URLSearchParams(location.search).get('part')||'body';document.querySelectorAll('[data-part]').forEach(e=>{if(e.dataset.part!==p)e.remove();});});</script>
+</head>
+<body>
+
+<!-- ===================================================== COVER -->
+<div class="cover admin" data-part="cover">
+  <div class="glow"></div>
+  <div class="brand"><img src="img/logo.svg" alt="">Classic Friends</div>
+  <div class="kicker">Operations handbook · Version 1.0 · Internal</div>
+  <h1>Admin Console<br>Guide</h1>
+  <p class="sub">How to run Classic Friends day to day: the dashboard, people, live rooms, reports, the gift catalog, banners, broadcasts and the server behind it all.</p>
+  <div class="meta"><b>For</b> owners, operations staff and moderators<br><b>Console address</b> &nbsp;your-domain/admin/ &nbsp;·&nbsp; locally http://localhost:3000/admin/</div>
+  <div class="phones"><img src="img/a02-dashboard.jpg" alt=""></div>
+</div>
+
+<!-- ===================================================== BODY -->
+<div class="body" data-part="body">
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><span class="n">1</span><span class="t" data-toc="What the console does">What the console does</span><span class="p"></span></li>
+    <li><span class="n">2</span><span class="t" data-toc="Signing in and finding your way">Signing in and finding your way</span><span class="p"></span></li>
+    <li><span class="n">3</span><span class="t" data-toc="Dashboard">Dashboard</span><span class="p"></span></li>
+    <li><span class="n">4</span><span class="t" data-toc="Users">Users</span><span class="p"></span></li>
+    <li><span class="n">5</span><span class="t" data-toc="Live rooms">Live rooms</span><span class="p"></span></li>
+    <li><span class="n">6</span><span class="t" data-toc="Reports and moderation">Reports and moderation</span><span class="p"></span></li>
+    <li><span class="n">7</span><span class="t" data-toc="Gift catalog">Gift catalog</span><span class="p"></span></li>
+    <li><span class="n">8</span><span class="t" data-toc="Home banners">Home banners</span><span class="p"></span></li>
+    <li><span class="n">9</span><span class="t" data-toc="Broadcast">Broadcast</span><span class="p"></span></li>
+    <li><span class="n">10</span><span class="t" data-toc="Running the server">Running the server</span><span class="p"></span></li>
+    <li><span class="n">11</span><span class="t" data-toc="Daily, weekly and monthly routines">Daily, weekly and monthly routines</span><span class="p"></span></li>
+    <li><span class="n">12</span><span class="t" data-toc="Economy reference">Economy reference</span><span class="p"></span></li>
+    <li><span class="n">13</span><span class="t" data-toc="Admin API reference">Admin API reference</span><span class="p"></span></li>
+    <li><span class="n">14</span><span class="t" data-toc="Troubleshooting">Troubleshooting</span><span class="p"></span></li>
+  </ol>
+</div>
+
+<!-- ---------------------------------------------------- 1 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 1</div><h2>What the console does</h2><p>The admin console is the control room for Classic Friends. It shows what is happening right now and lets a small team keep the community safe, the economy healthy and the home screen fresh.</p></div>
+  <div class="callout danger"><span class="ic">🔐</span><div><b>Security basics</b>Change the default token (<code>classicfriends-admin</code>) before anyone but you can reach the server. Only open the console over <b>https://</b>. Never paste the token into chats or screenshots. Rotate it whenever a team member leaves (see Chapter 10).</div></div>
+  <div class="cards three">
+    <div class="card"><div class="ic">📊</div><b>Dashboard</b><p>Who is online, which rooms are live, gifts and coins today, open reports, top rooms and top gifters.</p></div>
+    <div class="card"><div class="ic">👥</div><b>Users</b><p>Find anyone by name or ID. Grant coins, set VIP, ban or unban.</p></div>
+    <div class="card"><div class="ic">🎤</div><b>Live rooms</b><p>Every open room with host, people, mics and gifts. Open one, or end it.</p></div>
+    <div class="card"><div class="ic">🚩</div><b>Reports</b><p>Everything members have reported, with context. Dismiss, warn or ban.</p></div>
+    <div class="card"><div class="ic">🎁</div><b>Gift catalog</b><p>Prices, availability and new gifts.</p></div>
+    <div class="card"><div class="ic">🖼️</div><b>Banners &amp; Broadcast</b><p>Home-screen campaigns and app-wide announcements.</p></div>
+  </div>
+  <h3><span class="n">1.1</span>Who should have access</h3>
+  <p>The console is protected by one admin token. Everyone who knows the token has every power on this list, so keep the circle small. A practical split for a growing team:</p>
+  <table>
+    <thead><tr><th>Role</th><th>Uses</th><th>Should not</th></tr></thead>
+    <tbody>
+      <tr><td><b>Owner</b></td><td>Everything, including the server, the token, gift prices and payouts.</td><td>—</td></tr>
+      <tr><td><b>Operations</b></td><td>Dashboard, banners, broadcasts, gift catalog, coin grants for promotions.</td><td>Ban users without a report trail.</td></tr>
+      <tr><td><b>Moderator</b></td><td>Reports, users (ban/unban), live rooms (end room).</td><td>Change prices, grant coins, edit banners.</td></tr>
+      <tr><td><b>Support</b></td><td>Users (look up, small coin grants for refunds/compensation).</td><td>Ban, end rooms, change catalog.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ---------------------------------------------------- 2 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 2</div><h2>Signing in and finding your way</h2><p>The console lives at <code>/admin/</code> on the same address as the app.</p></div>
+  <div class="side">
+    <div class="shot half"><img src="img/a01-login.jpg" alt=""><div class="cap"><b>Sign-in.</b> Paste the admin token and press Sign in. The token is remembered in this browser until you sign out.</div></div>
+    <div class="txt">
+      <ol class="steps">
+        <li>Open <code>https://your-domain/admin/</code> (locally: <code>http://localhost:3000/admin/</code>).</li>
+        <li>Enter the admin token. It is the <code>ADMIN_TOKEN</code> value set on the server.</li>
+        <li>Tap <span class="ui">Sign in</span>. If the token is wrong you will see <i>That token was not accepted</i>.</li>
+        <li>To leave, use <span class="ui">Sign out</span> at the bottom of the sidebar. This forgets the token on this browser.</li>
+      </ol>
+  <div class="callout tip"><span class="ic">💡</span><div><b>Bookmark the pages</b>Each page has its own address: <code>/admin/#users</code>, <code>/admin/#rooms</code>, <code>/admin/#reports</code>, <code>/admin/#gifts</code>, <code>/admin/#banners</code>, <code>/admin/#broadcast</code>.</div></div>
+    </div>
+  </div>
+  <h3><span class="n">2.1</span>The layout</h3>
+  <div class="side">
+    <div class="shot annot" style="width:100mm"><img src="img/a02-dashboard.jpg" alt="" style="border-radius:2.5mm">
+      <span class="m" style="left:9%;top:5%">1</span><span class="m" style="left:9%;top:24%">2</span><span class="m" style="left:9%;top:92%">3</span><span class="m" style="left:80%;top:5%">4</span><span class="m" style="left:94%;top:5%">5</span><span class="m" style="left:9%;top:30%">6</span>
+    </div>
+    <div class="txt"><ul class="legend">
+      <li><span class="m">1</span><span><b>Brand and home.</b> Tap to return to the dashboard.</span></li>
+      <li><span class="m">2</span><span><b>Navigation.</b> Dashboard, Users, Live rooms, Reports, Gifts, Banners, Broadcast. The pink number next to Reports is the count of open reports.</span></li>
+      <li><span class="m">3</span><span><b>Links and sign out.</b> Open the app or the website in a new tab; sign out of the console.</span></li>
+      <li><span class="m">4</span><span><b>Status.</b> <i>● live</i> means the console is talking to the server; <i>● offline</i> means it cannot reach it (see Troubleshooting).</span></li>
+      <li><span class="m">5</span><span><b>Refresh.</b> Reloads the current page immediately. Dashboard and Live rooms also refresh themselves every 10 seconds while the tab is visible.</span></li>
+      <li><span class="m">6</span><span><b>Reports badge</b> — a shortcut to what needs attention.</span></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------- 3 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 3</div><h2>Dashboard</h2><p>A live picture of the community. Glance at it at the start and end of every shift.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a02-dashboard.jpg" alt=""><div class="cap"><b>Dashboard.</b> Ten tiles, top rooms by gifts and top gifters. Refreshes every 10 seconds.</div></div></div>
+  <h3><span class="n">3.1</span>The tiles</h3>
+  <table>
+    <thead><tr><th style="width:30%">Tile</th><th>Exactly what it counts</th><th style="width:30%">What to watch for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Online now</b></td><td>Accounts connected at this moment, including simulated people (bots) if they are enabled.</td><td>Your busiest hours — schedule broadcasts and events for them.</td></tr>
+      <tr><td><b>Live rooms</b></td><td>Rooms currently open.</td><td>A sudden drop can mean the server restarted.</td></tr>
+      <tr><td><b>On mic</b></td><td>People sitting on a mic seat across all rooms.</td><td>Low "on mic" with high "online" means rooms are quiet — nudge hosts.</td></tr>
+      <tr><td><b>Gifts today</b></td><td>Number of gifts sent since midnight (UTC). Resets daily.</td><td>Compare day over day after campaigns.</td></tr>
+      <tr><td><b>Coins spent today</b></td><td>Coins spent on gifts since midnight (UTC).</td><td>Your core economy signal.</td></tr>
+      <tr><td><b>Est. revenue</b></td><td>Coins spent today × 0.89 — a rough platform share after host payouts and store fees. Adjust the factor in <code>shared/engine.js</code> to match your real margin.</td><td>Treat as an estimate, not accounting.</td></tr>
+      <tr><td><b>Open reports</b></td><td>Reports nobody has acted on yet.</td><td>Keep this at zero by the end of each shift.</td></tr>
+      <tr><td><b>Total users</b></td><td>All accounts ever created on this server (bots included).</td><td>Growth.</td></tr>
+      <tr><td><b>Messages</b></td><td>Room chat messages since the server started.</td><td>Engagement.</td></tr>
+      <tr><td><b>Families</b></td><td>Families that exist.</td><td>Community depth.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">3.2</span>Top rooms and top gifters</h3>
+  <p><b>Top rooms by gifts</b> ranks live rooms by the total coins gifted inside them since they opened; the bar is relative to the top room. <b>Top gifters</b> lists the five accounts with the most XP (coins ever sent) and their Charm (coins ever received). People marked <span class="badge grey">bot</span> are simulated and can be ignored for business decisions.</p>
+  <div class="callout"><span class="ic">🤖</span><div><b>About bots</b>Simulated people keep rooms lively while the community is small. They appear in counts and lists with a <i>bot</i> tag. Turn them off for production with <code>BOTS=0</code> (Chapter 10).</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 4 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 4</div><h2>Users</h2><p>Find any account, see its balances and status, and act on it.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a03-users.jpg" alt=""><div class="cap"><b>Users.</b> Search by name or ID. 25 accounts per page, newest first.</div></div></div>
+  <h3><span class="n">4.1</span>Columns</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>User</td><td>Avatar, name, level badge, VIP crown and level, <span class="badge grey">bot</span> tag if simulated; below: Classic Friends ID and country.</td></tr>
+      <tr><td>Coins</td><td>Spendable balance.</td></tr>
+      <tr><td>Diamonds</td><td>Earned from gifts received; exchangeable for coins by the member.</td></tr>
+      <tr><td>XP</td><td>Total coins ever sent (drives level and the Wealth ranking).</td></tr>
+      <tr><td>Status</td><td><span class="badge" style="background:#16A34A">online</span> connected now · <span class="badge grey">offline</span> · <span class="badge" style="background:#E5484D">banned</span> suspended · <span class="badge grey">in room</span> currently inside a room.</td></tr>
+      <tr><td>Last seen</td><td>Time since the account was last connected.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">4.2</span>Actions</h3>
+  <div class="side">
+    <div class="shot half"><img src="img/a04-users-coins.jpg" alt=""><div class="cap"><b>Grant coins.</b> Type an amount and save. The member's balance updates instantly, even mid-room.</div></div>
+    <div class="txt">
+      <h4>+ coins</h4>
+      <p>Adds coins to the account. Use it for refunds, compensation after an outage, contest prizes and promotions. Enter the amount and tap <span class="ui">Save</span>. Keep a note of every grant (who, how much, why) in your team's log — the console does not keep one yet.</p>
+      <h4>VIP</h4>
+      <p>Sets the VIP level 0–7 directly. A level set here stays until you change it (it does not expire like a purchased VIP). Use 0 to remove VIP. Typical uses: partner hosts, agency leaders, making good on a failed purchase.</p>
+      <h4>Ban / Unban</h4>
+      <p>Confirm the dialog to ban. The member is removed from any room immediately, sees <i>Your account was suspended</i>, and cannot sign in again until you tap <span class="ui">Unban</span>. Banning is reversible and keeps the account's history, coins and friends.</p>
+    </div>
+  </div>
+  <div class="callout caution"><span class="ic">⚖️</span><div><b>Before you ban</b>Check the reports page for the context, note the report ID and reason, and prefer <i>Warned</i> for a first offence unless the behaviour is severe (threats, scams, sexual content, underage). See the moderation policy in Chapter 6.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 5 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 5</div><h2>Live rooms</h2><p>Every room that is open right now, who hosts it and how busy it is.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a05-rooms.jpg" alt=""><div class="cap"><b>Live rooms.</b> Refreshes every 10 seconds. The line under each room shows its ID, language, country, a lock for private rooms and ⚔️ when a PK battle is running.</div></div></div>
+  <table>
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Room</td><td>Name, ID, language, country, 🔒 private, ⚔️ PK running.</td></tr>
+      <tr><td>Host</td><td>The owner of the room (their name, level and VIP).</td></tr>
+      <tr><td>People</td><td>Members inside right now.</td></tr>
+      <tr><td>On mic</td><td>Occupied seats / total seats (8 or 12).</td></tr>
+      <tr><td>Gifts</td><td>Coins gifted in this room since it opened.</td></tr>
+      <tr><td>Mode</td><td><i>free</i> — anyone can take a seat · <i>apply</i> — the host approves seats.</td></tr>
+      <tr><td>Age</td><td>How long the room has been open.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">5.1</span>Open</h3>
+  <p><span class="ui">Open</span> launches the room in the app in a new tab, using whatever member account that browser is signed in with. Sign in to the app with a dedicated staff account (for example "Classic Friends Team") so hosts recognise you. Inside the room you can listen, read the chat and use the normal member tools (report, block). You do not get host powers in someone else's room — use <b>End room</b> from the console for that.</p>
+  <h3><span class="n">5.2</span>End room</h3>
+  <p><span class="ui">End room</span> closes the room for everyone after a confirmation. Members see <i>The host ended the room</i> and return to the home screen; the room disappears from the list. Use it for rooms that break the rules (after a warning where possible), for abandoned rooms with a disconnected host, or during an incident. There is no undo, but the host can open a new room at once.</p>
+  <div class="callout tip"><span class="ic">📣</span><div><b>Warn first</b>Send a broadcast (Chapter 9) or join the room with the staff account and write in chat before ending a busy room. Members remember how they were treated.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 6 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 6</div><h2>Reports and moderation</h2><p>Members report people from any seat, chat line, profile or private chat. Every report lands here with its context.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a06-reports.jpg" alt=""><div class="cap"><b>Reports.</b> Newest first. Open reports show three actions; resolved ones show their outcome.</div></div></div>
+  <h3><span class="n">6.1</span>Anatomy of a report</h3>
+  <table>
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>When</td><td>Time since the report was filed.</td></tr>
+      <tr><td>Reported</td><td>The account being reported — the person you may act on.</td></tr>
+      <tr><td>By</td><td>The member who filed it. Repeated reports from one person about many others can be a sign of a grudge.</td></tr>
+      <tr><td>Reason</td><td>One of: Abusive language · Harassment · Spam or scam · Inappropriate content · Underage user · Other. Any extra details and the room ID appear underneath.</td></tr>
+      <tr><td>Status</td><td><span class="badge" style="background:#FFB547;color:#3A2200">open</span> waiting for you · <i>resolved</i> dismissed · <i>warned</i> member was warned · <i>ban</i> member was banned.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">6.2</span>Handling a report</h3>
+  <ol class="steps">
+    <li><b>Read the context.</b> Reason, details and the room ID. If the room is still live, open it (Live rooms → Open) and watch for a few minutes.</li>
+    <li><b>Check history.</b> Search the reported account on the Users page and look for earlier reports about them on this page.</li>
+    <li><b>Choose an action:</b> <span class="ui">Dismiss</span> when nothing is wrong or there is no evidence · <span class="ui">Warned</span> when you have told the member to stop (send them a message from the staff account) · <span class="ui">Ban user</span> for severe or repeated violations — this bans immediately after a confirmation.</li>
+    <li><b>Write it down.</b> Report ID, decision and reason go in the team log so the next moderator sees the pattern.</li>
+  </ol>
+  <h3><span class="n">6.3</span>Recommended policy</h3>
+  <table>
+    <thead><tr><th style="width:34%">Behaviour</th><th>First time</th><th>Repeat</th></tr></thead>
+    <tbody>
+      <tr><td>Rude language, spam, off-topic selling</td><td>Warn</td><td>Ban for 7 days (unban manually), then permanent</td></tr>
+      <tr><td>Harassment, hate, targeted bullying</td><td>Warn and end the room if the host allowed it</td><td>Permanent ban</td></tr>
+      <tr><td>Scams: selling coins outside the app, asking for OTPs or payment details</td><td>Permanent ban</td><td>—</td></tr>
+      <tr><td>Sexual content, threats, violence</td><td>Permanent ban; preserve details for authorities if needed</td><td>—</td></tr>
+      <tr><td>Underage user</td><td>Ban and delete personal data on request</td><td>—</td></tr>
+      <tr><td>False or vengeful reporting</td><td>Dismiss; warn the reporter if it repeats</td><td>Ban the reporter after repeated abuse</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><span class="ic">⏱️</span><div><b>Response targets</b>Look at open reports at least every 2 hours during your busy evening window and within 24 hours otherwise. Underage and scam reports come first.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 7 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 7</div><h2>Gift catalog</h2><p>Twenty-nine gifts across four shelves. You can change prices, switch gifts on or off and add new ones without touching code.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a07-gifts.jpg" alt=""><div class="cap"><b>Gift catalog.</b> Emoji, name and ID, category, price, tier, VIP requirement and whether it is active.</div></div></div>
+  <table>
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Category</td><td><i>hot</i> everyday · <i>lucky</i> can pay the sender back · <i>luxury</i> big effects · <i>vip</i> needs a VIP level.</td></tr>
+      <tr><td>Price</td><td>Coins the sender pays per gift.</td></tr>
+      <tr><td>Tier</td><td>Visual effect: 1 pops on the receiver's seat · 2 adds a fly-in and a banner · 3 fills the screen with a burst · 4 adds a screen flash and vibration.</td></tr>
+      <tr><td>VIP</td><td>Minimum VIP level needed to send it (VIP shelf only).</td></tr>
+      <tr><td>Active</td><td><i>on</i> can be sent · <i>off</i> hidden from the panel.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">7.1</span>Changing a price</h3>
+  <div class="side">
+    <div class="shot half"><img src="img/a10-gift-price.jpg" alt=""><div class="cap"><b>Price dialog.</b> Enter the new price in coins and save.</div></div>
+    <div class="txt">
+      <ol class="steps">
+        <li>Tap <span class="ui">Price</span> on the gift's row.</li>
+        <li>Enter the new price in coins and tap <span class="ui">Save</span>.</li>
+        <li>The server uses the new price at once. Members see it the next time they sign in (the app loads the catalog on sign-in).</li>
+      </ol>
+      <p>Keep the shelves readable: Hot 1–80, Lucky 10–100, Luxury 100–50,000, VIP 300–30,000. Changing tiers or VIP levels is done in <code>shared/catalog.js</code>.</p>
+    </div>
+  </div>
+  <h3><span class="n">7.2</span>Disable, enable and add gifts</h3>
+  <ul>
+    <li><span class="ui">Disable</span> hides a gift from the panel without deleting it; <span class="ui">Enable</span> brings it back. Useful for seasonal gifts.</li>
+    <li><span class="ui">+ New gift</span> asks for a name, an emoji and a price. The tier is chosen from the price (15+ coins → banner, 500+ → full screen) and the gift goes on the Hot shelf. New gifts appear for members on their next sign-in.</li>
+    <li>Catalog edits live in the server's memory. Make permanent changes in <code>shared/catalog.js</code> as well, or they will be lost on the next restart.</li>
+  </ul>
+  <div class="callout tip"><span class="ic">🎯</span><div><b>Pricing that works</b>Keep a 1-coin gift (the Rose) so everyone can say hello. Put the most beautiful effect on something many people can afford (the Crown at 500). Raise luxury prices only when the top rankings are dominated by a handful of accounts.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 8 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 8</div><h2>Home banners</h2><p>The carousel at the top of every member's home screen. Up to six banners, each with a title, subtitle, emoji and colour.</p></div>
+  <div class="fig"><div class="shot wide"><img src="img/a08-banners.jpg" alt=""><div class="cap"><b>Banners.</b> Edit the fields and the preview updates; tap <span class="ui">Save banners</span> to publish.</div></div></div>
+  <ol class="steps">
+    <li>Edit the <b>Title</b> (keep it under about 24 characters), the <b>Subtitle</b> (one line), the <b>Emoji</b> and the <b>Colour</b>.</li>
+    <li>Use <span class="ui">+ Add banner</span> for a new one (maximum 6) or <span class="ui">Remove</span> to delete one.</li>
+    <li>Tap <span class="ui">Save banners</span>. Members see the new set the next time their home screen refreshes — usually within seconds.</li>
+  </ol>
+  <p><b>Ideas that perform:</b> weekend gift carnival with double XP, karaoke or poetry battles with a coin prize, "Family week", new-host spotlight, a festival greeting (Diwali, Eid, Onam, Pongal). Change at least one banner every week so the home screen never looks stale.</p>
+  <div class="callout caution"><span class="ic">📝</span><div><b>Banners are promises</b>If a banner announces a prize, make sure someone on the team grants it (Users → + coins) and posts the winners in a broadcast.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 9 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 9</div><h2>Broadcast</h2><p>One message to everyone: a system line in every live room's chat and a notification in every member's inbox.</p></div>
+  <div class="side">
+    <div class="shot half"><img src="img/a09-broadcast.jpg" alt=""><div class="cap"><b>Broadcast.</b> Up to 200 characters. Tap Broadcast to send; there is no undo.</div></div>
+    <div class="txt">
+      <h4>Good uses</h4>
+      <ul>
+        <li>Event start: "Karaoke battle starts now in Tamil pasanga singing 🎤"</li>
+        <li>Winners: "Congrats Harini — top singer of the week, 5,000 coins 🏆"</li>
+        <li>Maintenance: "We restart the server at 03:00 for 5 minutes."</li>
+        <li>Safety reminders: "Staff never ask for OTPs or payment details."</li>
+      </ul>
+      <h4>Etiquette</h4>
+      <ul>
+        <li>At most two or three per day. Broadcasts interrupt conversations.</li>
+        <li>Write in the languages your community speaks; keep it short.</li>
+        <li>Never broadcast anything about a specific report or ban.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------- 10 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 10</div><h2>Running the server</h2><p>What the owner needs to know about the machine behind the console. Deployment to the internet is covered step by step in <code>docs/DEPLOYMENT.md</code>.</p></div>
+  <h3><span class="n">10.1</span>Start, stop, restart</h3>
+  <table>
+    <thead><tr><th>Task</th><th>Command (in the project folder)</th></tr></thead>
+    <tbody>
+      <tr><td>Install (first time)</td><td><code>npm install</code></td></tr>
+      <tr><td>Start</td><td><code>npm start</code> &nbsp;→ app at port 3000, console at <code>/admin/</code></td></tr>
+      <tr><td>Start with settings</td><td><code>ADMIN_TOKEN=secret BOTS=0 START_COINS=200 npm start</code></td></tr>
+      <tr><td>Stop</td><td>Ctrl + C in the terminal (or <code>pm2 stop classic-friends</code> on a server)</td></tr>
+      <tr><td>Health check</td><td>Open <code>/healthz</code> — it answers <code>{"ok":true}</code> with the uptime in seconds</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">10.2</span>Settings (environment variables)</h3>
+  <table>
+    <thead><tr><th>Name</th><th>Default</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>PORT</code></td><td>3000</td><td>Network port.</td></tr>
+      <tr><td><code>ADMIN_TOKEN</code></td><td>classicfriends-admin</td><td>The console password. Change it before going live; restart to apply.</td></tr>
+      <tr><td><code>BOTS</code></td><td>70</td><td>Simulated people. Set 0 for a real community, or a small number (10–20) while it grows.</td></tr>
+      <tr><td><code>START_COINS</code></td><td>1000</td><td>Welcome coins for every new account. 100–200 is sensible once payments are live.</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">10.3</span>What is saved, and where</h3>
+  <ul>
+    <li><b>Member accounts</b> (name, coins, diamonds, level, items, friends) are saved to <code>server/data/users.json</code> every 30 seconds and on shutdown, and restored on the next start. Back this file up daily.</li>
+    <li><b>Rooms, chats, moments, reports, banner edits and gift edits</b> live in memory and are lost on restart in this version. Members simply open new rooms; banners and gift prices return to the defaults in <code>shared/engine.js</code> and <code>shared/catalog.js</code> — so make lasting changes there too.</li>
+    <li>For a production community, connect a database as described in <code>docs/ARCHITECTURE.md</code>.</li>
+  </ul>
+  <h3><span class="n">10.4</span>Rotating the admin token</h3>
+  <ol class="steps">
+    <li>Choose a long random token (20+ characters).</li>
+    <li>Set <code>ADMIN_TOKEN</code> in your hosting dashboard or <code>.env</code> file.</li>
+    <li>Restart the server. Every console session is signed out automatically.</li>
+    <li>Share the new token privately with the people who still need it.</li>
+  </ol>
+  <div class="callout danger"><span class="ic">🧯</span><div><b>Incident checklist</b>If something is wrong (abuse wave, exploit, outage): 1) broadcast a short notice, 2) end affected rooms, 3) ban the accounts involved, 4) if needed stop the server, 5) write down what happened and when. Fix the cause before restarting with bots off.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 11 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 11</div><h2>Daily, weekly and monthly routines</h2><p>A small team can run Classic Friends well with these habits.</p></div>
+  <h3>Every shift (10 minutes)</h3>
+  <ul class="checklist">
+    <li>Dashboard: online, live rooms, on mic, coins today. Note anything unusual.</li>
+    <li>Reports: clear everything open. Underage and scam reports first.</li>
+    <li>Live rooms: skim the names and hosts; open anything that looks off.</li>
+    <li>Reply to support emails about coins, purchases and accounts.</li>
+  </ul>
+  <h3>Every week</h3>
+  <ul class="checklist">
+    <li>Refresh at least one banner; plan the weekend event and its prize budget.</li>
+    <li>Pay out or announce event winners with a broadcast; grant prizes on the Users page.</li>
+    <li>Look at the top gifters and top rooms — thank the hosts, spot accounts that look like fraud (huge coin balances with no purchases).</li>
+    <li>Back up <code>server/data/users.json</code> somewhere safe.</li>
+  </ul>
+  <h3>Every month</h3>
+  <ul class="checklist">
+    <li>Review gift prices and coin packs against what members actually buy.</li>
+    <li>Settle host payouts (diamonds → money) according to your Terms.</li>
+    <li>Rotate the admin token if anyone has left the team.</li>
+    <li>Read the moderation log for patterns and update the policy in Chapter 6 if needed.</li>
+  </ul>
+</section>
+
+<!-- ---------------------------------------------------- 12 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 12</div><h2>Economy reference</h2><p>The numbers behind coins, diamonds, XP and VIP, as configured in <code>shared/catalog.js</code>.</p></div>
+  <h3>How value moves</h3>
+  <table>
+    <thead><tr><th>Event</th><th>Sender / buyer</th><th>Receiver</th></tr></thead>
+    <tbody>
+      <tr><td>Gift of N coins</td><td>−N coins, +N XP, +N Wealth (daily/weekly/monthly rankings)</td><td>+0.5 N diamonds, +N Charm</td></tr>
+      <tr><td>Lucky gift</td><td>As above, plus a random return: 30 % nothing, 30 % 1×, 30 % 2×, 8 % 10×, 2 % 50× the price</td><td>As above</td></tr>
+      <tr><td>Diamond exchange</td><td>100 diamonds → 70 coins</td><td>—</td></tr>
+      <tr><td>Store item</td><td>−price, +price/2 XP; item lasts 30 days</td><td>—</td></tr>
+      <tr><td>VIP purchase</td><td>−price, +price XP; 30 days, extendable</td><td>—</td></tr>
+      <tr><td>Lucky wheel</td><td>−10 coins; prizes 0 / 5 / 10 / 20 / 50 / 100 / 500 with weights 30 / 25 / 20 / 12 / 8 / 4 / 1</td><td>—</td></tr>
+      <tr><td>Lucky bag</td><td>−total coins, +total XP</td><td>Random shares to whoever taps first</td></tr>
+      <tr><td>Check-in streak</td><td>+10 / 20 / 30 / 50 / 80 / 120 / 200 coins on days 1–7</td><td>—</td></tr>
+      <tr><td>Daily tasks</td><td>+20 to +50 coins each, up to 220 per day</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <h3>Coin packs</h3>
+  <table>
+    <thead><tr><th>Pack</th><th class="c">Coins</th><th class="c">Bonus</th><th class="c">INR</th><th class="c">AED</th><th class="c">USD</th></tr></thead>
+    <tbody>
+      <tr><td>Starter</td><td class="c">100</td><td class="c">—</td><td class="c">89</td><td class="c">3.99</td><td class="c">0.99</td></tr>
+      <tr><td>Small</td><td class="c">500</td><td class="c">+50</td><td class="c">449</td><td class="c">19.99</td><td class="c">4.99</td></tr>
+      <tr><td>Popular</td><td class="c">1,000</td><td class="c">+200</td><td class="c">899</td><td class="c">39.99</td><td class="c">9.99</td></tr>
+      <tr><td>Big</td><td class="c">2,500</td><td class="c">+500</td><td class="c">2,099</td><td class="c">94.99</td><td class="c">24.99</td></tr>
+      <tr><td>Large</td><td class="c">5,000</td><td class="c">+1,500</td><td class="c">4,299</td><td class="c">189.99</td><td class="c">49.99</td></tr>
+      <tr><td>Best value</td><td class="c">10,000</td><td class="c">+5,000</td><td class="c">8,499</td><td class="c">379.99</td><td class="c">99.99</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Prices are placeholders — set your own in <code>shared/catalog.js → COIN_PACKS</code> and pick the currency in <code>BRAND.currency</code>.</p>
+  <h3>Levels and VIP</h3>
+  <div class="cards">
+    <div class="card"><b>Levels 1–100</b><p>XP needed for level L = 100 × L<sup>1.8</sup> (level 2 at 348 XP, level 10 at 6,310, level 30 at 45,600, level 50 at 114,000). Badge colours change at 10, 20, 30, 40, 50 and 70.</p></div>
+    <div class="card"><b>VIP 1–7</b><p>Bronze 499 · Silver 999 · Gold 2,499 · Platinum 4,999 · Diamond 9,999 · Royal 19,999 · Supreme 49,999 coins per 30 days. Each tier unlocks one exclusive gift and extra perks (entry effects, kick immunity, hidden visits, custom ID).</p></div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------- 13 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 13</div><h2>Admin API reference</h2><p>Everything the console does is also available to scripts, so you can connect dashboards, alerts or a payments webhook. Every request needs the header <code>x-admin-token: &lt;your token&gt;</code>.</p></div>
+  <table>
+    <thead><tr><th style="width:38%">Endpoint</th><th>Does</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /api/admin/stats</code></td><td>Dashboard tiles, top rooms, top gifters.</td></tr>
+      <tr><td><code>GET /api/admin/users?q=&amp;page=</code></td><td>Search users (25 per page).</td></tr>
+      <tr><td><code>POST /api/admin/users/:id</code></td><td>Body: <code>{ banned, vip, coins, grantCoins, level }</code> — any subset.</td></tr>
+      <tr><td><code>GET /api/admin/rooms</code></td><td>Live rooms with seats, members and messages.</td></tr>
+      <tr><td><code>POST /api/admin/rooms/:id/close</code></td><td>End a room.</td></tr>
+      <tr><td><code>GET /api/admin/reports</code></td><td>All reports, newest first.</td></tr>
+      <tr><td><code>POST /api/admin/reports/:id</code></td><td>Body: <code>{ action: "resolved" | "warned" | "ban" }</code>.</td></tr>
+      <tr><td><code>GET / POST /api/admin/gifts</code></td><td>Read the catalog / update or add a gift <code>{ id, name, emoji, price, cat, tier, active }</code>.</td></tr>
+      <tr><td><code>GET / POST /api/admin/banners</code></td><td>Read / replace the banner list <code>{ banners: [...] }</code>.</td></tr>
+      <tr><td><code>POST /api/admin/broadcast</code></td><td>Body: <code>{ text }</code>.</td></tr>
+      <tr><td><code>GET /healthz</code></td><td>Uptime check (no token needed).</td></tr>
+    </tbody>
+  </table>
+  <p><b>Example</b> — grant 500 coins from a terminal:</p>
+  <p class="mono" style="background:#F6F3FF;border:1px solid #E6E1F5;border-radius:8pt;padding:8pt 10pt">curl -X POST https://your-domain/api/admin/users/4821934 \<br>&nbsp;&nbsp;-H "x-admin-token: YOUR_TOKEN" -H "Content-Type: application/json" \<br>&nbsp;&nbsp;-d '{"grantCoins":500}'</p>
+  <p class="small">The member app talks to the server over Socket.IO with a whitelist of actions; the full event list is in <code>docs/ARCHITECTURE.md</code>.</p>
+</section>
+
+<!-- ---------------------------------------------------- 14 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 14</div><h2>Troubleshooting</h2><p>When the console or the server misbehaves.</p></div>
+  <table>
+    <thead><tr><th style="width:36%">Symptom</th><th>Cause and fix</th></tr></thead>
+    <tbody>
+      <tr><td>"That token was not accepted"</td><td>The token differs from <code>ADMIN_TOKEN</code> on the server. Check for spaces; if the server was started without the variable, the default applies.</td></tr>
+      <tr><td>Status shows ● offline / "Could not reach the server"</td><td>The server is stopped or unreachable. Open <code>/healthz</code>; if it fails, start the server (<code>npm start</code> or <code>pm2 restart classic-friends</code>) and check the hosting dashboard.</td></tr>
+      <tr><td>Console signs you out by itself</td><td>The token was rotated and the server restarted. Sign in with the new token.</td></tr>
+      <tr><td>A member says a price or new gift is not visible</td><td>Catalog changes reach the app on sign-in. Ask them to sign out and in, or reload the page.</td></tr>
+      <tr><td>Banner edits disappeared</td><td>The server restarted; banners and gift edits are in memory in this version. Re-enter them, and put permanent ones in <code>shared/engine.js</code> / <code>shared/catalog.js</code>.</td></tr>
+      <tr><td>Members lost coins after a restart</td><td>The snapshot file <code>server/data/users.json</code> was deleted or the host has no persistent disk. Restore from backup; use a persistent disk or a database.</td></tr>
+      <tr><td>Dashboard numbers look inflated</td><td>Bots are counted. Run with <code>BOTS=0</code> for real figures.</td></tr>
+      <tr><td>Ending a room did not remove someone</td><td>Their connection lagged. They are removed when it reconnects; a ban removes them immediately regardless.</td></tr>
+      <tr><td>Voice does not work for members on the live site</td><td>Browsers allow microphones only on https://. Make sure the site has a valid certificate (see DEPLOYMENT.md).</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Support: hello@classicfriends.app · Keep this guide with your team's moderation log and the server credentials in a password manager.</p>
+</section>
+
+</div>
+</body>
+</html>

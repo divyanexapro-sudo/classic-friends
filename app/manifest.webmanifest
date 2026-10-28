@@ -1,0 +1,14 @@
+{
+  "name": "Classic Friends — Voice rooms & friends",
+  "short_name": "Classic Friends",
+  "description": "Live voice rooms, gifts, games and new friends — every night.",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0B2A",
+  "theme_color": "#0F0B2A",
+  "icons": [
+    { "src": "assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

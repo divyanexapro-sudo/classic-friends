@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classic Friends — Installation &amp; Hosting Guide</title>
+<link rel="stylesheet" href="guide.css">
+<style>
+  pre.cmd { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 8.6pt; line-height: 1.5; background: #0F0B2A; color: #E8E3FF; border-radius: 9pt; padding: 9pt 12pt; margin: 6pt 0 10pt; white-space: pre-wrap; word-break: break-word; break-inside: avoid; }
+  pre.cmd .c { color: #8E86B3; }
+  pre.cmd .o { color: #2DD4BF; }
+  pre.cmd b { color: #FFD36E; font-weight: 700; }
+  .diagram { margin: 8pt 0 12pt; break-inside: avoid; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .path-pick { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8pt; margin: 8pt 0 12pt; }
+  .path-pick .card b { font-size: 11pt; }
+  .path-pick .card .tag { display: inline-block; margin-bottom: 4pt; padding: 1px 7px; border-radius: 8px; font-size: 8pt; font-weight: 800; color: #fff; background: var(--violet); }
+  .path-pick .card ul { margin: 4pt 0 0; padding-left: 14pt; font-size: 9pt; color: var(--ink-2); }
+  .cost td:last-child { text-align: right; white-space: nowrap; }
+  .cover.hosting .phones { width: 118mm; height: 120mm; right: -8mm; bottom: 22mm; }
+  .cover.hosting .phones img { width: 116mm; border-radius: 4mm; left: 0; top: 10mm; transform: rotate(-4deg); }
+</style>
+<script>document.addEventListener('DOMContentLoaded',()=>{const p=new URLSearchParams(location.search).get('part')||'body';document.querySelectorAll('[data-part]').forEach(e=>{if(e.dataset.part!==p)e.remove();});});</script>
+</head>
+<body>
+
+<!-- ===================================================== COVER -->
+<div class="cover hosting" data-part="cover">
+  <div class="glow"></div>
+  <div class="brand"><img src="img/logo.svg" alt="">Classic Friends</div>
+  <div class="kicker">Technical handbook · Version 1.0</div>
+  <h1>Installation<br>&amp; Hosting<br>Guide</h1>
+  <p class="sub">From a zip file on your laptop to a live app with its own domain and HTTPS — every step, every command, two ways to do it.</p>
+  <div class="meta"><b>For</b> the owner or whoever sets up the server<br><b>Time needed</b> about 1 hour (plus DNS waiting time) &nbsp;·&nbsp; <b>Cost</b> from about $6 / month</div>
+  <div class="phones"><img src="img/site-hero.jpg" alt=""></div>
+</div>
+
+<!-- ===================================================== BODY -->
+<div class="body" data-part="body">
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><span class="n">1</span><span class="t" data-toc="How hosting works">How hosting works</span><span class="p"></span></li>
+    <li><span class="n">2</span><span class="t" data-toc="Before you start">Before you start</span><span class="p"></span></li>
+    <li><span class="n">3</span><span class="t" data-toc="Your domain name and DNS">Your domain name and DNS</span><span class="p"></span></li>
+    <li><span class="n">4</span><span class="t" data-toc="Path A — Render (no server to manage)">Path A — Render (no server to manage)</span><span class="p"></span></li>
+    <li><span class="n">5</span><span class="t" data-toc="Path B — Your own Ubuntu server">Path B — Your own Ubuntu server</span><span class="p"></span></li>
+    <li><span class="n">6</span><span class="t" data-toc="Going live: the website and first-day settings">Going live: the website and first-day settings</span><span class="p"></span></li>
+    <li><span class="n">7</span><span class="t" data-toc="Keeping it running and secure">Keeping it running and secure</span><span class="p"></span></li>
+    <li><span class="n">8</span><span class="t" data-toc="Growing up: payments, sign-in, database, voice at scale, app stores">Growing up: payments, sign-in, database, voice at scale, app stores</span><span class="p"></span></li>
+    <li><span class="n">9</span><span class="t" data-toc="Troubleshooting">Troubleshooting</span><span class="p"></span></li>
+    <li><span class="n">10</span><span class="t" data-toc="Command cheat sheet">Command cheat sheet</span><span class="p"></span></li>
+  </ol>
+</div>
+
+<!-- ---------------------------------------------------- 1 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 1</div><h2>How hosting works</h2><p>Classic Friends is one Node.js program. Put it on a computer that is always on, give that computer a name on the internet and a padlock (HTTPS), and the app, the admin console and the website are all live.</p></div>
+  <div class="diagram"><svg viewBox="0 0 650 282" xmlns="http://www.w3.org/2000/svg" font-family="Plus Jakarta Sans, sans-serif">
+    <defs><linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset=".55" stop-color="#F043A6"/><stop offset="1" stop-color="#FFB547"/></linearGradient><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7D75A3"/></marker><marker id="arl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C9C2E6"/></marker></defs>
+    <!-- devices -->
+    <rect x="8" y="70" width="120" height="130" rx="14" fill="#F6F3FF" stroke="#D9D2F0"/><text x="68" y="104" text-anchor="middle" font-size="26">📱 💻</text><text x="68" y="138" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1333">Members &amp; staff</text><text x="68" y="156" text-anchor="middle" font-size="10" fill="#4B4370">any browser,</text><text x="68" y="171" text-anchor="middle" font-size="10" fill="#4B4370">phone or desktop</text>
+    <!-- arrow -->
+    <line x1="128" y1="135" x2="204" y2="135" stroke="#7D75A3" stroke-width="2" marker-end="url(#ar)"/><text x="166" y="123" text-anchor="middle" font-size="10" fill="#4B4370">https://</text><text x="166" y="153" text-anchor="middle" font-size="10" fill="#4B4370">🔒 TLS</text>
+    <!-- DNS -->
+    <rect x="205" y="10" width="180" height="46" rx="10" fill="#fff" stroke="#D9D2F0"/><text x="295" y="29" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1A1333">Domain + DNS</text><text x="295" y="45" text-anchor="middle" font-size="9.5" fill="#4B4370">app.yourdomain.com → server IP</text>
+    <!-- server box -->
+    <rect x="205" y="66" width="437" height="210" rx="16" fill="#0F0B2A"/><text x="222" y="90" font-size="11" font-weight="700" fill="#FFD36E">YOUR SERVER (Ubuntu) or RENDER</text>
+    <rect x="218" y="104" width="104" height="120" rx="10" fill="#1E1540" stroke="#3B2A7A"/><text x="270" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Nginx</text><text x="270" y="145" text-anchor="middle" font-size="9.5" fill="#C9C2E6">HTTPS certificate</text><text x="270" y="159" text-anchor="middle" font-size="9.5" fill="#C9C2E6">(Let's Encrypt)</text><text x="270" y="181" text-anchor="middle" font-size="9.5" fill="#C9C2E6">routes requests,</text><text x="270" y="195" text-anchor="middle" font-size="9.5" fill="#C9C2E6">serves the website</text>
+    <line x1="322" y1="164" x2="336" y2="164" stroke="#C9C2E6" stroke-width="2" marker-end="url(#arl)"/>
+    <rect x="338" y="104" width="142" height="120" rx="10" fill="url(#gv)"/><text x="409" y="126" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">Node.js app</text><text x="409" y="144" text-anchor="middle" font-size="9.5" fill="#fff">server/index.js · port 3000</text><text x="409" y="159" text-anchor="middle" font-size="9.5" fill="#fff">rooms · chat · gifts</text><text x="409" y="173" text-anchor="middle" font-size="9.5" fill="#fff">voice signalling</text><text x="409" y="191" text-anchor="middle" font-size="9.5" fill="#fff">app at /  ·  admin at /admin</text><text x="409" y="209" text-anchor="middle" font-size="9.5" fill="#fff">kept alive by pm2</text>
+    <rect x="494" y="104" width="134" height="52" rx="10" fill="#1E1540" stroke="#3B2A7A"/><text x="561" y="125" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">server/data/users.json</text><text x="561" y="142" text-anchor="middle" font-size="9.5" fill="#C9C2E6">member snapshot · back it up</text>
+    <rect x="494" y="170" width="134" height="54" rx="10" fill="#1E1540" stroke="#3B2A7A"/><text x="561" y="192" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">website/ folder</text><text x="561" y="209" text-anchor="middle" font-size="9.5" fill="#C9C2E6">static files · yourdomain.com</text>
+    <line x1="480" y1="130" x2="492" y2="130" stroke="#C9C2E6" stroke-width="2"/>
+    <path d="M270 224 V250 H561 V226" fill="none" stroke="#C9C2E6" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arl)"/><text x="415" y="264" text-anchor="middle" font-size="9" fill="#C9C2E6">Nginx serves the website files directly</text>
+  </svg></div>
+  <h3><span class="n">1.1</span>The pieces</h3>
+  <table>
+    <thead><tr><th style="width:24%">Piece</th><th>What it is</th><th style="width:30%">You get it from</th></tr></thead>
+    <tbody>
+      <tr><td><b>Domain name</b></td><td>The address people type, e.g. <code>classicfriends.app</code>. We use <code>yourdomain.com</code> for the website and <code>app.yourdomain.com</code> for the app and admin console.</td><td>A registrar: Namecheap, GoDaddy, Hostinger, Cloudflare (~$10–15 per year)</td></tr>
+      <tr><td><b>Server</b></td><td>An always-on computer running the Node.js program.</td><td>Path A: Render (managed) · Path B: a VPS from DigitalOcean, Hetzner, AWS Lightsail or Hostinger (~$5–12 per month)</td></tr>
+      <tr><td><b>HTTPS certificate</b></td><td>The padlock. Browsers only allow microphones on https:// pages, so this is not optional.</td><td>Free, automatic (Let's Encrypt via Certbot, or built into Render)</td></tr>
+      <tr><td><b>Nginx</b></td><td>The doorman on your own server: receives https traffic, hands it to the app, serves the website files.</td><td>Installed by the setup script (Path B only)</td></tr>
+      <tr><td><b>pm2</b></td><td>Keeps the app running, restarts it after crashes and reboots, keeps logs.</td><td>Installed by the setup script (Path B only)</td></tr>
+    </tbody>
+  </table>
+  <h3><span class="n">1.2</span>Choose your path</h3>
+  <div class="path-pick">
+    <div class="card"><span class="tag">PATH A · EASIEST</span><b>Render.com</b><ul><li>No server to manage, HTTPS automatic</li><li>Deploys from a GitHub repository</li><li>Starter plan ~$7 / month + $0.25 for a 1 GB disk</li><li>Free plan for testing (sleeps when idle, forgets data)</li></ul></div>
+    <div class="card"><span class="tag" style="background:#F043A6">PATH B · FULL CONTROL</span><b>Your own Ubuntu server</b><ul><li>One script installs everything</li><li>Cheapest at scale (~$6 / month)</li><li>Website and app on one machine</li><li>You do updates and backups</li></ul></div>
+    <div class="card"><span class="tag" style="background:#2DD4BF;color:#06322D">ADD-ON</span><b>Website elsewhere</b><ul><li>Host the <code>website/</code> folder on Netlify or any shared hosting</li><li>Point its buttons at the app domain</li><li>Chapter 6</li></ul></div>
+  </div>
+  <table class="cost">
+    <thead><tr><th>Typical monthly cost</th><th>Amount</th></tr></thead>
+    <tbody>
+      <tr><td>Domain (yearly, averaged)</td><td>$1</td></tr><tr><td>Path A — Render starter + disk</td><td>$7.25</td></tr><tr><td>Path B — VPS 2 GB RAM (Hetzner / DigitalOcean / Lightsail)</td><td>$5–12</td></tr><tr><td>HTTPS certificate</td><td>$0</td></tr><tr><td>Uptime monitoring (UptimeRobot free plan)</td><td>$0</td></tr><tr><td>Later: Agora / LiveKit voice at scale</td><td>pay as you go (~$1 per 1,000 listener-minutes)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><span class="ic">🚂</span><div><b>Railway, Fly.io, Google Cloud Run, Docker…</b>Any host that runs Node or Docker works the same way as Path A. The project root has a <code>Dockerfile</code> and <code>docker-compose.yml</code>; Railway and Fly.io detect the Dockerfile automatically. Set the same three environment variables (<code>ADMIN_TOKEN</code>, <code>BOTS</code>, <code>START_COINS</code>) and attach a persistent volume at <code>/app/server/data</code>.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 2 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 2</div><h2>Before you start</h2><p>Ten minutes of preparation saves an hour of confusion later.</p></div>
+  <ul class="checklist">
+    <li><b>The project folder</b> <code>classic-friends/</code> (the zip you received), unzipped on your computer.</li>
+    <li><b>An email address</b> for certificates and provider sign-ups.</li>
+    <li><b>A payment card</b> for the domain and the host.</li>
+    <li><b>For Path A:</b> a free GitHub account (github.com). Render deploys from there.</li>
+    <li><b>For Path B:</b> a terminal — on Windows open <b>PowerShell</b>; on Mac open <b>Terminal</b>. Both already include the <code>ssh</code> and <code>scp</code> commands we use.</li>
+    <li><b>Decide your names.</b> This guide uses <code>yourdomain.com</code> for the website and <code>app.yourdomain.com</code> for the app + admin. Replace them with yours everywhere.</li>
+  </ul>
+  <div class="callout tip"><span class="ic">💡</span><div><b>Test locally first</b>Run <code>npm install</code> and <code>npm start</code> on your computer and open http://localhost:3000. If it works there, it will work on the server — the server runs exactly the same program.</div></div>
+  <h3><span class="n">2.1</span>What the project folder must contain on the server</h3>
+  <table>
+    <thead><tr><th>Folder / file</th><th>Needed on the server?</th></tr></thead>
+    <tbody>
+      <tr><td><code>server/</code> <code>shared/</code> <code>app/</code> <code>admin/</code> <code>website/</code> <code>package.json</code></td><td>Yes — this is the app</td></tr>
+      <tr><td><code>deploy/</code></td><td>Yes for Path B — the setup script, Nginx configs, pm2 config, backup and update scripts</td></tr>
+      <tr><td><code>render.yaml</code> <code>Dockerfile</code> <code>docker-compose.yml</code></td><td>Yes for Path A and Docker hosts — they must stay at the top level of the folder</td></tr>
+      <tr><td><code>node_modules/</code></td><td>No — created on the server by <code>npm install</code>. Do not upload it (it is large)</td></tr>
+      <tr><td><code>docs/</code> <code>dist/</code></td><td>Optional — documentation and the single-file demo</td></tr>
+      <tr><td><code>.env</code></td><td>Created on the server with your secrets (Chapter 5). Never put it in a public GitHub repository</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ---------------------------------------------------- 3 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 3</div><h2>Your domain name and DNS</h2><p>Buy the name, then tell the internet where your server is. DNS changes can take from a few minutes to a few hours to spread.</p></div>
+  <h3><span class="n">3.1</span>Buy a domain</h3>
+  <ol class="steps">
+    <li>Go to a registrar (<b>Namecheap</b>, <b>GoDaddy</b>, <b>Hostinger</b>, <b>Cloudflare</b>) and search for the name you want; <code>.com</code> is the safest choice.</li>
+    <li>Buy one year with auto-renew on. Skip the add-ons (hosting, email, "premium DNS") — you do not need them.</li>
+    <li>In the registrar's dashboard open <b>DNS settings</b> (also called <b>Manage DNS</b> / <b>DNS records</b>) and add the records below.</li>
+  </ol>
+  <h3><span class="n">3.2</span>DNS records</h3>
+  <p>Leave TTL on "Automatic". "Host" is sometimes called "Name"; <code>@</code> means the domain itself. Delete any placeholder <code>A</code> or <code>CNAME</code> records for <code>@</code> and <code>www</code> that the registrar created.</p>
+  <table>
+    <thead><tr><th style="width:18%">Path</th><th style="width:12%">Type</th><th style="width:16%">Host</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3"><b>B — own server</b></td><td>A</td><td><code>@</code></td><td>your server's IP address, e.g. <code>203.0.113.10</code></td></tr>
+      <tr><td>A</td><td><code>app</code></td><td>the same IP address</td></tr>
+      <tr><td>CNAME</td><td><code>www</code></td><td><code>yourdomain.com</code></td></tr>
+      <tr><td rowspan="2"><b>A — Render</b></td><td>CNAME</td><td><code>app</code></td><td>the address Render shows, e.g. <code>classic-friends.onrender.com</code></td></tr>
+      <tr><td>A / CNAME</td><td><code>@</code> and <code>www</code></td><td>wherever the website lives (Render static site, Netlify, or the same service)</td></tr>
+    </tbody>
+  </table>
+  <div class="diagram"><svg viewBox="0 0 760 120" xmlns="http://www.w3.org/2000/svg" font-family="Plus Jakarta Sans, sans-serif">
+    <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7D75A3"/></marker></defs>
+    <rect x="10" y="12" width="200" height="40" rx="10" fill="#F6F3FF" stroke="#D9D2F0"/><text x="110" y="37" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1333">yourdomain.com</text>
+    <rect x="10" y="68" width="200" height="40" rx="10" fill="#F6F3FF" stroke="#D9D2F0"/><text x="110" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1333">app.yourdomain.com</text>
+    <line x1="210" y1="32" x2="290" y2="32" stroke="#7D75A3" stroke-width="2" marker-end="url(#ar2)"/><text x="250" y="24" text-anchor="middle" font-size="10" fill="#4B4370">A record</text>
+    <line x1="210" y1="88" x2="290" y2="88" stroke="#7D75A3" stroke-width="2" marker-end="url(#ar2)"/><text x="250" y="80" text-anchor="middle" font-size="10" fill="#4B4370">A record</text>
+    <rect x="292" y="12" width="150" height="96" rx="12" fill="#0F0B2A"/><text x="367" y="54" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">203.0.113.10</text><text x="367" y="72" text-anchor="middle" font-size="10" fill="#C9C2E6">your server</text>
+    <line x1="442" y1="32" x2="520" y2="32" stroke="#C9C2E6" stroke-width="2" marker-end="url(#ar2)"/><line x1="442" y1="88" x2="520" y2="88" stroke="#C9C2E6" stroke-width="2" marker-end="url(#ar2)"/>
+    <rect x="522" y="12" width="228" height="40" rx="10" fill="#fff" stroke="#D9D2F0"/><text x="636" y="37" text-anchor="middle" font-size="11" fill="#1A1333">Nginx serves <tspan font-weight="700">website/</tspan> (static)</text>
+    <rect x="522" y="68" width="228" height="40" rx="10" fill="#fff" stroke="#D9D2F0"/><text x="636" y="93" text-anchor="middle" font-size="11" fill="#1A1333">Nginx → <tspan font-weight="700">Node app</tspan> on port 3000</text>
+  </svg></div>
+  <h3><span class="n">3.3</span>Check that DNS is working</h3>
+  <pre class="cmd"><span class="c"># On your computer (Windows PowerShell or Mac Terminal)</span>
+nslookup app.yourdomain.com
+<span class="o">Name:    app.yourdomain.com
+Address: 203.0.113.10          ← must show YOUR server's IP</span></pre>
+  <p>Or check on <b>dnschecker.org</b>. Do not run the HTTPS step of the setup until this shows your IP.</p>
+  <div class="callout caution"><span class="ic">☁️</span><div><b>Using Cloudflare?</b>The orange-cloud proxy works, but turn on <b>WebSockets</b> (Network settings) and set SSL/TLS to <b>Full (strict)</b> once your certificate is installed; until then keep the cloud grey (DNS only).</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 4 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 4</div><h2>Path A — Render (no server to manage)</h2><p>Render runs the Node program for you, gives it HTTPS and restarts it when needed. You push code to GitHub; Render deploys it. About 30 minutes.</p></div>
+  <h3><span class="n">4.1</span>Put the project on GitHub</h3>
+  <ol class="steps">
+    <li>Create a free account at <b>github.com</b>.</li>
+    <li>Click <b>New repository</b>, name it <code>classic-friends</code>, choose <b>Private</b>, and create it.</li>
+    <li>Upload the project. Easiest without any tools: on the repository page click <b>Add file → Upload files</b>, drag the <i>contents</i> of the <code>classic-friends</code> folder in (everything except <code>node_modules</code>), and click <b>Commit changes</b>. With many files this can take a few minutes. Alternatively install <b>GitHub Desktop</b>, choose <i>Add local repository</i>, and publish.</li>
+    <li>Check the repository shows <code>package.json</code>, <code>render.yaml</code>, <code>server/</code> and <code>app/</code> at the top level.</li>
+  </ol>
+  <h3><span class="n">4.2</span>Create the service on Render</h3>
+  <ol class="steps">
+    <li>Sign up at <b>render.com</b> (you can sign in with GitHub) and connect your GitHub account when asked.</li>
+    <li>Click <b>New → Blueprint</b>, pick the <code>classic-friends</code> repository. Render reads <code>render.yaml</code> and shows one web service. (If you prefer the manual way: <b>New → Web Service</b>, build command <code>npm install</code>, start command <code>npm start</code>.)</li>
+    <li><b>Plan:</b> choose <b>Starter</b> for a real launch. The blueprint also asks for a 1 GB <b>disk</b> mounted at <code>server/data</code> so member accounts survive restarts. The <b>Free</b> plan is fine for a test, but it sleeps after 15 minutes of inactivity and has no disk.</li>
+    <li><b>Environment variables</b> — the blueprint sets <code>BOTS=10</code>, <code>START_COINS=200</code> and generates a random <code>ADMIN_TOKEN</code>. Open the service → <b>Environment</b> to read or change them.</li>
+    <li>Click <b>Apply / Create</b>. Watch the <b>Logs</b> tab: after a minute you should see <i>Classic Friends is running 🎤</i>.</li>
+    <li>Open the address Render gives you (<code>https://classic-friends-xxxx.onrender.com</code>). The app loads with HTTPS already working. Sign in, open a room, take a mic — your phone will ask for microphone permission.</li>
+  </ol>
+  <h3><span class="n">4.3</span>Your own domain on Render</h3>
+  <ol class="steps">
+    <li>In the service open <b>Settings → Custom Domains → Add</b> and enter <code>app.yourdomain.com</code>.</li>
+    <li>Render shows a CNAME target. Add that CNAME at your registrar (Chapter 3). Render issues the certificate automatically once DNS resolves — usually within minutes.</li>
+    <li>Repeat for the website if you host it on Render too: <b>New → Static Site</b>, same repository, <b>Publish directory</b> <code>website</code>, custom domain <code>yourdomain.com</code> (and <code>www</code>).</li>
+    <li>Tell the website where the app is: in <code>website/index.html</code> uncomment the line <code>window.CF_APP_URL = "https://app.yourdomain.com"</code>, commit, and Render redeploys.</li>
+  </ol>
+  <h3><span class="n">4.4</span>Updating later</h3>
+  <p>Upload or push changed files to GitHub. Render rebuilds and restarts automatically (watch Logs). To roll back, open <b>Events</b> and click <b>Rollback</b> on a previous deploy.</p>
+</section>
+
+<!-- ---------------------------------------------------- 5 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 5</div><h2>Path B — Your own Ubuntu server</h2><p>A small virtual server you fully control. One script installs Node, pm2, Nginx, the firewall and the HTTPS certificate. About 45 minutes, most of it waiting.</p></div>
+  <h3><span class="n">5.1</span>Create the server</h3>
+  <ol class="steps">
+    <li>Sign up with a provider: <b>DigitalOcean</b> (Droplet), <b>Hetzner Cloud</b>, <b>AWS Lightsail</b>, <b>Vultr</b> or <b>Hostinger VPS</b>. For India and the Gulf pick a region near your members — Bangalore, Mumbai, Bahrain (AWS), or Frankfurt.</li>
+    <li>Create a server with <b>Ubuntu 22.04 or 24.04</b>, <b>2 GB RAM</b> (1 GB works to start), and either an <b>SSH key</b> (recommended, the provider explains how) or a root <b>password</b>.</li>
+    <li>Note the server's <b>public IP address</b> (e.g. <code>203.0.113.10</code>) and add the DNS records from Chapter 3 now, so they propagate while you work.</li>
+  </ol>
+  <h3><span class="n">5.2</span>Connect to it</h3>
+  <pre class="cmd"><span class="c"># Windows PowerShell or Mac Terminal — type yes when asked about the fingerprint</span>
+ssh root@203.0.113.10
+<span class="o">root@classic-friends:~#</span>          <span class="c">← you are now typing on the server</span></pre>
+  <h3><span class="n">5.3</span>Upload the project</h3>
+  <p>Pick whichever you find easiest. The folder must end up at <code>/opt/classic-friends</code> on the server.</p>
+  <h4>Option 1 — scp from your computer (one command)</h4>
+  <pre class="cmd"><span class="c"># On YOUR computer, from the folder that contains classic-friends/ (not inside it)</span>
+<span class="c"># First delete classic-friends/node_modules if it exists — it will be rebuilt on the server</span>
+scp -r classic-friends root@203.0.113.10:/opt/classic-friends</pre>
+  <h4>Option 2 — FileZilla (drag and drop)</h4>
+  <p>Install FileZilla, choose protocol <b>SFTP</b>, host = your IP, user <code>root</code>, your password or key. Drag the <code>classic-friends</code> folder (without <code>node_modules</code>) into <code>/opt/</code>.</p>
+  <h4>Option 3 — from GitHub</h4>
+  <pre class="cmd"><span class="c"># On the server (private repos will ask for a GitHub token as the password)</span>
+apt-get update -y && apt-get install -y git
+git clone https://github.com/<b>YOUR-USER</b>/classic-friends.git /opt/classic-friends</pre>
+  <h3><span class="n">5.4</span>Run the setup script</h3>
+  <pre class="cmd"><span class="c"># On the server. Arguments: app domain · website domain · your email (for the certificate). Takes 5–10 minutes.</span>
+bash /opt/classic-friends/deploy/setup-ubuntu.sh <b>app.yourdomain.com</b> <b>yourdomain.com</b> <b>you@email.com</b></pre>
+  <p>The script prints seven numbered steps. This is what each one does:</p>
+  <table>
+    <thead><tr><th style="width:26%">Step</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td>1 System packages</td><td>Updates Ubuntu and installs curl, git, nginx, unzip and the ufw firewall.</td></tr>
+      <tr><td>2 Node.js 20 + pm2</td><td>Installs the Node runtime and the pm2 process manager.</td></tr>
+      <tr><td>3 App folder</td><td>Runs <code>npm install</code> inside <code>/opt/classic-friends</code> and creates <code>server/data</code> and <code>backups</code>.</td></tr>
+      <tr><td>4 Environment</td><td>Creates <code>/opt/classic-friends/.env</code> with <code>PORT=3000</code>, a <b>random ADMIN_TOKEN</b> (printed on screen — save it), <code>BOTS=10</code>, <code>START_COINS=200</code>.</td></tr>
+      <tr><td>5 pm2</td><td>Starts the app, saves the process list and registers pm2 to start at boot.</td></tr>
+      <tr><td>6 Nginx</td><td>Installs two site configs: <code>app.yourdomain.com</code> → the Node app (with WebSocket support) and <code>yourdomain.com</code> → the <code>website/</code> folder.</td></tr>
+      <tr><td>7 Firewall + HTTPS</td><td>Opens ports 22, 80 and 443 only, then asks Let's Encrypt for certificates and switches both domains to HTTPS with automatic renewal.</td></tr>
+    </tbody>
+  </table>
+  <pre class="cmd"><span class="o">All done 🎉
+  App     → https://app.yourdomain.com
+  Admin   → https://app.yourdomain.com/admin/   token: kQ9v2…
+  Website → https://yourdomain.com
+  Logs    → pm2 logs classic-friends</span></pre>
+  <div class="callout caution"><span class="ic">⏳</span><div><b>If step 7 says the certificate could not be issued</b>DNS has not propagated yet. Wait until <code>nslookup app.yourdomain.com</code> shows your IP, then run <code>certbot --nginx -d app.yourdomain.com -d yourdomain.com -d www.yourdomain.com</code>. Everything else is already in place.</div></div>
+  <h3><span class="n">5.5</span>Verify</h3>
+  <ol class="steps">
+    <li>Open <code>https://app.yourdomain.com/healthz</code> — you should see <code>{"ok":true,…}</code>.</li>
+    <li>Open <code>https://app.yourdomain.com</code> on your phone, sign in, join a room and take a mic. Allow the microphone. Open the same room on a second phone or laptop and talk — you should hear each other.</li>
+    <li>Open <code>https://app.yourdomain.com/admin/</code> and sign in with the token from <code>.env</code>.</li>
+    <li>Open <code>https://yourdomain.com</code> — the website — and press <b>Open the app</b>.</li>
+    <li>Reboot test: run <code>reboot</code>, wait a minute, open the app again. pm2 brings it back by itself.</li>
+  </ol>
+</section>
+
+<!-- ---------------------------------------------------- 6 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 6</div><h2>Going live: the website and first-day settings</h2><p>The app is up — now the website, then fifteen minutes of settings before you tell anyone.</p></div>
+  <h3><span class="n">6.1</span>The website on your main domain</h3>
+  <p>The site is plain files in <code>website/</code>: host it on the same server (Path B did this) or on any static host.</p>
+  <table>
+    <thead><tr><th style="width:28%">Where</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td><b>Same server (Path B)</b></td><td>Done by the setup script: Nginx serves <code>/opt/classic-friends/website</code> at <code>yourdomain.com</code>. To update, upload the new <code>website/</code> folder — no restart needed.</td></tr>
+      <tr><td><b>Render static site</b></td><td>New → Static Site → same repository → publish directory <code>website</code> → custom domain <code>yourdomain.com</code>.</td></tr>
+      <tr><td><b>Netlify / Vercel</b></td><td>Drag the <code>website</code> folder onto app.netlify.com/drop — live in seconds with HTTPS. Add your domain in Site settings.</td></tr>
+      <tr><td><b>Shared hosting (Hostinger, cPanel)</b></td><td>Upload the <i>contents</i> of <code>website/</code> into <code>public_html</code> with the file manager.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout tip"><span class="ic">🔗</span><div><b>Point the buttons at the app</b>When the website and app are on different domains, uncomment the <code>window.CF_APP_URL</code> line near the top of <code>website/index.html</code> and set it to <code>https://app.yourdomain.com</code>.</div></div>
+  <h3><span class="n">6.2</span>First-day settings</h3>
+  <ol class="steps" style="break-inside:auto">
+    <li><b>Save the admin token</b> in a password manager. Server: <code>/opt/classic-friends/.env</code> · Render: the Environment tab.</li>
+    <li><b>Bots.</b> <code>BOTS=10</code> keeps a few rooms alive while the community is small; set <code>BOTS=0</code> once real hosts are around every evening. Edit <code>.env</code>, then <code>pm2 restart classic-friends --update-env</code> (Render: edit the variable).</li>
+    <li><b>Welcome coins.</b> <code>START_COINS=200</code> is a sensible gift to new members. Raise it for a launch campaign.</li>
+    <li><b>Create a staff account</b> in the app named "Classic Friends Team" and use it when you join rooms from the admin console.</li>
+    <li><b>Banners.</b> In the admin console set your first three banners (launch offer, weekend event, safety reminder).</li>
+    <li><b>Legal pages.</b> Replace the placeholders in <code>website/privacy.html</code> and <code>website/terms.html</code> (company name, address, date).</li>
+    <li><b>Support email.</b> Change <code>supportEmail</code> and <code>website</code> in <code>shared/catalog.js → BRAND</code> to your real addresses, then restart.</li>
+    <li><b>Monitoring.</b> Create a free monitor at <b>uptimerobot.com</b> for <code>https://app.yourdomain.com/healthz</code> — you get an email if the app goes down.</li>
+  </ol>
+</section>
+
+<!-- ---------------------------------------------------- 7 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 7</div><h2>Keeping it running and secure</h2><p>Path B housekeeping — Render does most of this for you. The hardening list at the end takes ten minutes.</p></div>
+  <h3><span class="n">7.1</span>pm2 — the process manager</h3>
+  <pre class="cmd">pm2 status                         <span class="c"># is it running? memory? restarts?</span>
+pm2 logs classic-friends           <span class="c"># live log (Ctrl+C to leave)</span>
+pm2 restart classic-friends --update-env   <span class="c"># after changing .env</span>
+pm2 stop classic-friends           <span class="c"># stop (members see "connection lost")</span>
+pm2 start /opt/classic-friends/deploy/ecosystem.config.js && pm2 save</pre>
+  <h3><span class="n">7.2</span>Updating to a new version</h3>
+  <ol class="steps">
+    <li>Back up first (next section). Then upload the new files over the old ones (scp, FileZilla or <code>git pull</code>). Do not delete <code>server/data</code> or <code>.env</code>.</li>
+    <li>Run <code>bash /opt/classic-friends/deploy/update.sh</code> — it installs any new dependencies, takes a backup and restarts the app. Members reconnect automatically within a few seconds.</li>
+  </ol>
+  <h3><span class="n">7.3</span>Backups</h3>
+  <p>Member accounts are in <code>server/data/users.json</code>. The script <code>deploy/backup.sh</code> copies it with a timestamp into <code>backups/</code> and keeps the last 30 copies. Run it daily:</p>
+  <pre class="cmd">crontab -e
+<span class="c"># add this line, save, exit</span>
+0 3 * * * /opt/classic-friends/deploy/backup.sh</pre>
+  <p>Once a week copy the newest backup to your computer (<code>scp root@203.0.113.10:/opt/classic-friends/backups/users-*.json .</code>) or turn on your provider's snapshots.</p>
+  <h3><span class="n">7.4</span>Server updates, certificates, disk</h3>
+  <pre class="cmd">apt-get update && apt-get upgrade -y     <span class="c"># monthly; reboot if it says so</span>
+certbot renew --dry-run                  <span class="c"># certificates renew themselves; this checks the timer</span>
+df -h /                                  <span class="c"># disk space (rotate logs: pm2 install pm2-logrotate)</span></pre>
+  <h3><span class="n">7.5</span>Security hardening</h3>
+  <ul class="checklist">
+    <li><b>SSH keys instead of passwords.</b> Run <code>ssh-keygen</code> on your computer, add the public key to the server's <code>~/.ssh/authorized_keys</code>, then set <code>PasswordAuthentication no</code> in <code>/etc/ssh/sshd_config</code> and <code>systemctl restart ssh</code>.</li>
+    <li><b>fail2ban</b> blocks repeated login attempts: <code>apt-get install -y fail2ban</code> — the defaults protect SSH.</li>
+    <li><b>Automatic security updates:</b> <code>apt-get install -y unattended-upgrades</code>.</li>
+    <li><b>Rotate the admin token</b> when someone leaves (edit <code>.env</code>, restart) and never use the development default <code>classicfriends-admin</code> on the internet.</li>
+    <li><b>Backups off the server</b> (section 7.3) — a hacked or deleted server should never mean lost members.</li>
+  </ul>
+</section>
+
+<!-- ---------------------------------------------------- 8 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 8</div><h2>Growing up: payments, sign-in, database, voice at scale, app stores</h2><p>None of these are needed on day one. Each one is a contained change; <code>docs/ARCHITECTURE.md</code> shows exactly where it plugs in.</p></div>
+  <table>
+    <thead><tr><th style="width:22%">When</th><th style="width:26%">Add</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td>First real money</td><td><b>Payments</b> (Razorpay for India, Stripe / Tap / Telr for the Gulf)</td><td>Create a checkout for each coin pack. The gateway's webhook calls your server, which calls <code>engine.recharge(userId, { packId })</code>. Remove <code>recharge</code> from the client <code>ACTIONS</code> list in <code>server/index.js</code> so coins can only come from verified payments.</td></tr>
+      <tr><td>Before 1,000 members</td><td><b>Real sign-in</b> (phone OTP via MSG91 / Twilio Verify, or Google via Firebase Auth)</td><td>After the provider confirms the user, the server calls <code>engine.login({ id: providerUserId, name, … })</code>. Never accept an <code>id</code> from the client.</td></tr>
+      <tr><td>Before 1,000 members</td><td><b>Database</b> (PostgreSQL on Supabase / Neon / RDS, or MongoDB Atlas)</td><td>Persist users, rooms, DMs, moments, families and reports instead of the JSON snapshot. The engine's maps are the seams. Keep daily automated backups on the database provider.</td></tr>
+      <tr><td>Rooms with 8+ speakers or 30+ listeners</td><td><b>Agora or LiveKit</b> for voice</td><td>Replace <code>app/js/voice/webrtc.js</code> with the SDK: join channel = room id, publish the mic when seated. Also add a <b>TURN</b> server (coturn or Twilio) so strict mobile networks connect.</td></tr>
+      <tr><td>Traffic grows</td><td><b>Several servers</b> behind a load balancer</td><td>Add the Socket.IO Redis adapter so room events reach every instance; put the database behind them.</td></tr>
+      <tr><td>Launch marketing</td><td><b>App stores</b></td><td>The app is already installable (PWA). For a store listing wrap it with <b>Capacitor</b> (iOS + Android) or a Trusted Web Activity (Android). Push notifications via Firebase Cloud Messaging.</td></tr>
+      <tr><td>Any time</td><td><b>Analytics</b></td><td>Add Plausible or Google Analytics to <code>app/index.html</code> and <code>website/index.html</code>; the admin dashboard already shows the product numbers.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><span class="ic">🧩</span><div><b>Working with a developer</b>Hand them <code>docs/ARCHITECTURE.md</code> and this chapter. Each item is a few days of work for a Node.js developer; none of them require rebuilding the app.</div></div>
+</section>
+
+<!-- ---------------------------------------------------- 9 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 9</div><h2>Troubleshooting</h2><p>Nearly every hosting problem is one of these.</p></div>
+  <table>
+    <thead><tr><th style="width:34%">Symptom</th><th>Cause → fix</th></tr></thead>
+    <tbody>
+      <tr><td>Browser shows "Welcome to nginx!"</td><td>The site config is not enabled. <code>ls /etc/nginx/sites-enabled</code> should list <code>classic-friends-app</code>; run the setup script again or <code>ln -s</code> the config, then <code>nginx -t && systemctl reload nginx</code>.</td></tr>
+      <tr><td>502 Bad Gateway</td><td>Nginx is fine but the app is not running. <code>pm2 status</code> → if stopped, <code>pm2 logs classic-friends</code> shows why (usually a missing <code>npm install</code> or a bad <code>.env</code> line).</td></tr>
+      <tr><td>App loads but says "Server not reachable" / demo mode notice</td><td>WebSocket is blocked. Check the Nginx config has the <code>Upgrade</code> headers (it does in <code>deploy/nginx-app.conf</code>); on Cloudflare enable WebSockets.</td></tr>
+      <tr><td>Microphone does not work on phones</td><td>The page is not https://, or the certificate failed. Fix DNS, then run certbot (section 5.4). Also check the phone did not block the mic for the site.</td></tr>
+      <tr><td>Certbot: "DNS problem" / "connection refused"</td><td>DNS not propagated, or port 80 closed. Wait for <code>nslookup</code> to show your IP; <code>ufw status</code> must show Nginx Full allowed.</td></tr>
+      <tr><td>"EADDRINUSE: port 3000"</td><td>Something else is on port 3000 (often a second copy of the app). <code>pm2 delete all</code> then start again from the ecosystem file.</td></tr>
+      <tr><td>Node version error on <code>npm install</code></td><td>Ubuntu's own Node is too old. The setup script installs Node 20; run it again or <code>node -v</code> must show 18 or higher.</td></tr>
+      <tr><td>App stops after a reboot</td><td>pm2 startup was not registered: <code>pm2 startup</code>, run the command it prints, then <code>pm2 save</code>.</td></tr>
+      <tr><td>Members lost coins after a restart</td><td><code>server/data/users.json</code> was deleted or not writable; on Render the disk was not attached. Restore from <code>backups/</code>.</td></tr>
+      <tr><td>Out of memory / slow</td><td>1 GB RAM with bots on. Set <code>BOTS=0</code>, add 1 GB of swap (<code>fallocate -l 1G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile</code>), or resize the server.</td></tr>
+      <tr><td>Render app is slow to open</td><td>Free plan sleeping. Upgrade to Starter, or accept the ~30 s wake-up for testing.</td></tr>
+      <tr><td>Website shows but "Open the app" goes nowhere</td><td>Set <code>window.CF_APP_URL</code> in <code>website/index.html</code> (section 6.1).</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ---------------------------------------------------- 10 -->
+<section class="chapter">
+  <div class="chapter-head"><div class="num">CHAPTER 10</div><h2>Command cheat sheet</h2><p>Everything from this guide on one page — replace the domain, IP and paths with yours. Companion documents: User Guide · Admin Console Guide · docs/DEPLOYMENT.md.</p></div>
+  <h4>Install (Path B)</h4>
+  <pre class="cmd">scp -r classic-friends root@203.0.113.10:/opt/classic-friends   <span class="c"># from your computer</span>
+ssh root@203.0.113.10
+cd /opt/classic-friends                                        <span class="c"># on the server</span>
+bash deploy/setup-ubuntu.sh app.yourdomain.com yourdomain.com you@email.com</pre>
+  <h4>Daily operation</h4>
+  <pre class="cmd">pm2 status · pm2 logs classic-friends · pm2 restart classic-friends --update-env
+nano /opt/classic-friends/.env               <span class="c"># ADMIN_TOKEN · BOTS · START_COINS · PORT</span>
+bash /opt/classic-friends/deploy/update.sh   <span class="c"># after uploading a new version</span>
+bash /opt/classic-friends/deploy/backup.sh   <span class="c"># manual backup (cron runs it at 03:00)</span>
+curl https://app.yourdomain.com/healthz      <span class="c"># {"ok":true,...}</span></pre>
+  <h4>Nginx &amp; HTTPS</h4>
+  <pre class="cmd">nginx -t && systemctl reload nginx
+certbot --nginx -d app.yourdomain.com -d yourdomain.com -d www.yourdomain.com
+certbot renew --dry-run</pre>
+  <h4>Files that matter</h4>
+  <table>
+    <thead><tr><th style="width:46%">File</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><code>/opt/classic-friends/.env</code></td><td>Secrets and settings</td></tr>
+      <tr><td><code>/opt/classic-friends/server/data/users.json</code></td><td>Member accounts — back it up</td></tr>
+      <tr><td><code>/opt/classic-friends/backups/</code></td><td>Timestamped copies (last 30)</td></tr>
+      <tr><td><code>/etc/nginx/sites-enabled/classic-friends-*</code></td><td>Web server configs</td></tr>
+      <tr><td><code>/opt/classic-friends/deploy/</code></td><td>setup-ubuntu.sh · update.sh · backup.sh · ecosystem.config.js · Nginx configs · Caddyfile</td></tr>
+      <tr><td><code>render.yaml</code> · <code>Dockerfile</code> · <code>docker-compose.yml</code></td><td>Project root — for Render and Docker hosts</td></tr>
+    </tbody>
+  </table>
+  <h4>Settings reference</h4>
+  <table>
+    <thead><tr><th>Variable</th><th>Default</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>PORT</code></td><td>3000</td><td>Port the app listens on (Nginx talks to it)</td></tr>
+      <tr><td><code>ADMIN_TOKEN</code></td><td>random (script) / classicfriends-admin (dev)</td><td>Admin console password</td></tr>
+      <tr><td><code>BOTS</code></td><td>10 (script) / 70 (dev)</td><td>Simulated people; 0 for a real community</td></tr>
+      <tr><td><code>START_COINS</code></td><td>200 (script) / 1000 (dev)</td><td>Welcome coins per new account</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+</body>
+</html>

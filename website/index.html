@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Classic Friends — Voice rooms & friends</title>
+  <meta name="description" content="Classic Friends is a live voice-room app: pull up a mic, sing, chat, play games and send gifts with friends from India, the Gulf and beyond — every night.">
+  <meta property="og:title" content="Classic Friends — Pull up a mic.">
+  <meta property="og:description" content="Live voice rooms, gifts, games and new friends — every night.">
+  <meta name="theme-color" content="#F6F3FF">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/site.css">
+  <!-- If the app lives on another domain, tell the "Open the app" buttons where it is:
+  <script>window.CF_APP_URL = "https://app.yourdomain.com";</script> -->
+</head>
+<body>
+  <header class="nav" id="nav">
+    <a class="brand" href="#top"><img src="assets/logo.svg" alt=""><span>Classic Friends</span></a>
+    <nav class="links">
+      <a href="#rooms">Rooms</a><a href="#features">Features</a><a href="#gifts">Gifts</a><a href="#hosts">For hosts</a><a href="#safety">Safety</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn primary" href="../" data-app>Open the app</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <main id="top">
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Pull up a mic.</h1>
+        <p class="lead">Live voice rooms where strangers become friends. Sing, chat, play and send gifts with people from Chennai to Dubai — every night, in your language.</p>
+        <div class="cta-row">
+          <a class="btn primary lg" href="../" data-app>Try it in your browser</a>
+          <a class="btn lg" href="#download">Get the app</a>
+        </div>
+        <ul class="hero-points">
+          <li><b>8–12</b> mic seats per room</li>
+          <li><b>29</b> gifts with full-screen effects</li>
+          <li><b>12</b> languages, 21 countries</li>
+        </ul>
+      </div>
+      <div class="hero-phone">
+        <div class="phone">
+          <div class="phone-screen" id="demo-room">
+            <div class="dr-top"><span class="dr-dot"></span><b id="dr-title">Late night chill 🌙</b><span class="dr-count" id="dr-count">128</span></div>
+            <div class="dr-host" id="dr-host"></div>
+            <div class="dr-seats" id="dr-seats"></div>
+            <div class="dr-chat" id="dr-chat"></div>
+            <div class="dr-bar"><span class="say">Say something…</span><i>😊</i><i class="gift">🎁</i><i class="mic">🎙️</i></div>
+            <div class="dr-fx" id="dr-fx"></div>
+          </div>
+        </div>
+        <div class="hero-glow"></div>
+      </div>
+    </section>
+
+    <!-- ================= ROOMS TICKER ================= -->
+    <section class="rooms" id="rooms">
+      <div class="wrap">
+        <h2>Tonight on Classic Friends</h2>
+        <p class="sub">Rooms open around the clock — Hindi, Tamil, Malayalam, Urdu, Arabic, English and more.</p>
+      </div>
+      <div class="ticker" id="ticker"><div class="ticker-track" id="ticker-track"></div></div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section class="features wrap" id="features">
+      <h2>Everything a voice club needs</h2>
+      <p class="sub">Built the way the best voice apps work — and then made warmer.</p>
+      <div class="feature-grid">
+        <article><span class="fi g1">🎙️</span><h3>Voice rooms with mic seats</h3><p>Host seat plus 8 or 12 mics. Free or apply-to-speak mode, seat locks, mute controls, room themes, announcements and a live chat under the seats.</p></article>
+        <article><span class="fi g2">🎁</span><h3>Gifts with real effects</h3><p>Roses to Galaxies. Small gifts pop on a seat, big ones take over the screen. Lucky gifts can pay you back. Receivers earn diamonds they can cash out.</p></article>
+        <article><span class="fi g3">🤝</span><h3>Friends, CP and families</h3><p>Follow hosts, add friends, chat privately, pair up as CP and build a family that climbs the weekly ranking together.</p></article>
+        <article><span class="fi g4">🎲</span><h3>Games inside the room</h3><p>Lucky wheel, dice, lucky bags everyone can grab, truth-or-dare cards and red-vs-blue PK battles between mic seats.</p></article>
+        <article><span class="fi g5">👑</span><h3>Levels, VIP and store</h3><p>Every coin sent is XP. Unlock badges, 7 VIP tiers, avatar frames, chat bubbles, entry effects and room themes.</p></article>
+        <article><span class="fi g6">🛡️</span><h3>Safe by design</h3><p>Host and admin tools, one-tap reports, blocking, word filters and an admin console to act on reports in minutes.</p></article>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="how">
+      <div class="wrap">
+        <h2>Three taps to your first room</h2>
+        <ol class="steps">
+          <li><span class="n">1</span><h3>Pick a name and an avatar</h3><p>No forms, no waiting. Shuffle until you find a face you like.</p></li>
+          <li><span class="n">2</span><h3>Join a room or go live</h3><p>Browse by country, topic or language. Or open your own room and take the host seat.</p></li>
+          <li><span class="n">3</span><h3>Talk, gift, make friends</h3><p>Tap a seat to speak. Send a rose to say hi. Follow the people you click with.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= GIFTS ================= -->
+    <section class="gifts" id="gifts">
+      <div class="wrap">
+        <h2>Say it with a gift</h2>
+        <p class="sub">Twenty-nine gifts across four shelves. Tap one below to preview its effect.</p>
+        <div class="gift-stage" id="gift-stage"><div class="stage-inner"><span class="stage-emoji" id="stage-emoji">🚀</span><b id="stage-name">Rocket</b><span class="stage-price" id="stage-price">5,000 coins · full-screen effect</span></div></div>
+        <div class="gift-shelf" id="gift-shelf"></div>
+      </div>
+    </section>
+
+    <!-- ================= HOSTS ================= -->
+    <section class="hosts wrap" id="hosts">
+      <div class="hosts-grid">
+        <div>
+          <h2>Built for hosts and families</h2>
+          <p class="sub">Every gift you receive becomes diamonds. Exchange them for coins, climb the Charm ranking, and grow a family that shows up every night.</p>
+          <ul class="checks">
+            <li>Room admins (up to 7), seat locks, mute and remove</li>
+            <li>Welcome message, announcements, “now playing” and PK battles</li>
+            <li>Daily, weekly and monthly Wealth, Charm, Room and Family rankings</li>
+            <li>Diamond → coin exchange and host payouts</li>
+          </ul>
+        </div>
+        <div class="host-card">
+          <div class="hc-row"><span class="hc-avatar" id="hc-avatar"></span><div><b>Rania <span class="lv">Lv.42</span> <span class="vip">👑 VIP3</span></b><div class="muted">Host · Dubai friends zone</div></div></div>
+          <div class="hc-stats"><div><b>318K</b><span>charm</span></div><div><b>12.4K</b><span>followers</span></div><div><b>#1</b><span>weekly</span></div></div>
+          <div class="hc-bar"><span>This week</span><div class="bar"><i style="width:78%"></i></div><span class="muted">💎 24,120 diamonds</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SAFETY ================= -->
+    <section class="safety" id="safety">
+      <div class="wrap safety-grid">
+        <div><h2>A room should feel like a living room</h2><p class="sub">Classic Friends is for adults 18+. Hosts own their space, and our team backs them up.</p></div>
+        <ul class="safety-list">
+          <li><b>Report in one tap</b> from any seat, message or profile — reports land in the admin console with full context.</li>
+          <li><b>Block anyone</b> and they can’t message you, send requests or join your rooms.</li>
+          <li><b>Word filter</b> on every chat and moment, in multiple languages.</li>
+          <li><b>Private rooms</b> with passwords, apply-to-speak mode and seat locks for calmer sessions.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="faq wrap" id="faq">
+      <h2>Questions, answered</h2>
+      <div class="faq-list">
+        <details open><summary>Is Classic Friends free?</summary><p>Yes. Listening, talking, chatting and most features are free. Coins for gifts, VIP and store items are optional purchases.</p></details>
+        <details><summary>Which languages and countries?</summary><p>Rooms are tagged by language — Hindi, Tamil, Telugu, Malayalam, Kannada, Urdu, Arabic, English, Bengali, Punjabi, Marathi and Gujarati — and you can filter rooms by 21 countries across South Asia, the Gulf and the diaspora.</p></details>
+        <details><summary>How do hosts earn?</summary><p>Gifts you receive become diamonds. Exchange diamonds for coins inside the app, or request a payout once you reach the monthly threshold (see Terms).</p></details>
+        <details><summary>Do I need to download anything?</summary><p>No — the web app runs in any modern browser on Android, iPhone or desktop. Add it to your home screen for a full-screen experience. Native store apps are on the roadmap.</p></details>
+        <details><summary>What are CP and families?</summary><p>CP is a pair bond with your closest friend; gifts between you grow it. A family is a squad of up to 100 members with a badge, level and weekly ranking.</p></details>
+      </div>
+    </section>
+
+    <!-- ================= DOWNLOAD ================= -->
+    <section class="download" id="download">
+      <div class="wrap dl-inner">
+        <img src="assets/logo.svg" alt="">
+        <h2>Your friends are already talking.</h2>
+        <p>Open Classic Friends in your browser now — or install it to your home screen in two taps.</p>
+        <div class="cta-row center">
+          <a class="btn primary lg" href="../" data-app>Open the web app</a>
+          <a class="btn lg ghost-dark" href="#" data-store="ios">iPhone · coming soon</a>
+          <a class="btn lg ghost-dark" href="#" data-store="android">Android · coming soon</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap foot-grid">
+      <div><a class="brand" href="#top"><img src="assets/logo.svg" alt=""><span>Classic Friends</span></a><p class="muted">Voice rooms, gifts and friends — every night.</p></div>
+      <div><b>Product</b><a href="#features">Features</a><a href="#gifts">Gifts</a><a href="#hosts">For hosts</a><a href="../" data-app>Web app</a></div>
+      <div><b>Company</b><a href="#safety">Safety</a><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of use</a><a href="mailto:hello@classicfriends.app">Contact</a></div>
+      <div><b>Team</b><a href="../admin/">Admin console</a><a href="mailto:hello@classicfriends.app">Become a host agency</a></div>
+    </div>
+    <div class="wrap copy">© <span id="year"></span> Classic Friends. All rights reserved. 18+ only.</div>
+  </footer>
+
+  <script src="js/shared/catalog.js"></script>
+  <script src="js/shared/avatar.js"></script>
+  <script src="js/site.js"></script>
+</body>
+</html>
