@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test --test-timeout=30000 test/server.test.js",
+    "test:voice": "node test/voice-e2e.js",
+    "test:ui": "node test/ui-smoke.js",
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "build:demo": "node scripts/build-demo.js"

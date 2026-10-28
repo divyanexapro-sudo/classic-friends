@@ -78,7 +78,7 @@
     },
     async login(params) {
       const res = await Net.connect(params);
-      S.set('me', res.user); S.set('gifts', res.gifts || CF.catalog.GIFTS); S.set('banners', res.banners || []);
+      S.set('me', res.user); S.set('gifts', res.gifts || CF.catalog.GIFTS); S.set('banners', res.banners || []); S.set('freeRecharge', res.freeRecharge !== false);
       // `secret` is this device's proof of owning the account (live server only); without it the id alone can't sign in
       LS.set(SESSION_KEY, JSON.stringify({ id: res.user.id, secret: res.secret || params.secret, name: res.user.name, gender: res.user.gender, country: res.user.country, avatarSeed: res.user.avatar }));
       App.bindGlobal();

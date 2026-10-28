@@ -34,7 +34,7 @@ const DEFAULT_ADMIN_TOKEN = 'classicfriends-admin';
 // in production the admin API stays locked until a real token is set
 const ADMIN_LOCKED = PRODUCTION && (!process.env.ADMIN_TOKEN || ADMIN_TOKEN === DEFAULT_ADMIN_TOKEN || ADMIN_TOKEN.length < 16);
 // coin packs are credited without a payment gateway; allowed for development/demo only unless explicitly enabled
-const FREE_RECHARGE = process.env.FREE_RECHARGE != null ? process.env.FREE_RECHARGE === '1' : !PRODUCTION;
+const FREE_RECHARGE = process.env.FREE_RECHARGE ? process.env.FREE_RECHARGE === '1' : !PRODUCTION;   // empty = unset
 const list = v => String(v || '').split(',').map(s => s.trim()).filter(Boolean);
 const ICE_SERVERS = [
   ...list(process.env.STUN_URLS || 'stun:stun.l.google.com:19302,stun:stun1.l.google.com:19302').map(urls => ({ urls })),
@@ -57,8 +57,6 @@ app.get('/healthz', (req, res) => res.json({ ok: true, uptime: process.uptime() 
 const engine = new Engine({ catalog, avatar, startCoins: START_COINS });
 const bots = new BotDirector(engine).hookRequests();
 if (BOTS > 0) bots.seed(BOTS);
-restore();
-bots.start();
 
 /* ---------- device secrets ----------
    A user id is public (everyone in a room sees it), so it can't be the login credential on its own.
@@ -92,7 +90,10 @@ function restore() {
       const res = engine.login({ id: s.id, name: s.name, gender: s.gender, country: s.country, avatarSeed: s.avatar, bio: s.bio });
       if (!res.ok) continue;
       const u = engine.user(s.id);
-      Object.assign(u, { bio: s.bio, birthday: s.birthday, level: s.level, xp: s.xp, charm: s.charm, coins: s.coins, diamonds: s.diamonds, vip: s.vip, vipUntil: s.vipUntil, equipped: s.equipped, inventory: s.inventory, badges: s.badges, checkIn: s.checkIn, stats: s.stats, settings: s.settings, periods: s.periods || {}, createdAt: s.createdAt, banned: s.banned, online: false });
+      // fields missing from an older/partial snapshot keep the engine's defaults instead of becoming undefined
+      const saved = { bio: s.bio, birthday: s.birthday, level: s.level, xp: s.xp, charm: s.charm, coins: s.coins, diamonds: s.diamonds, vip: s.vip, vipUntil: s.vipUntil, equipped: s.equipped && Object.assign({}, u.equipped, s.equipped), inventory: s.inventory, badges: s.badges, checkIn: s.checkIn, stats: s.stats && Object.assign({}, u.stats, s.stats), settings: s.settings && Object.assign({}, u.settings, s.settings), periods: s.periods, createdAt: s.createdAt, banned: s.banned };
+      for (const k of Object.keys(saved)) if (saved[k] != null) u[k] = saved[k];
+      u.online = false;
       for (const id of s.following || []) if (engine.user(id)) { u.following.add(id); engine.user(id).followers.add(u.id); }
       for (const id of s.friends || []) if (engine.user(id)) { u.friends.add(id); engine.user(id).friends.add(u.id); }
       engine.notifications.set(u.id, []);
@@ -101,6 +102,8 @@ function restore() {
     console.log(`restored ${data.users.length} users from ${DATA_FILE}`);
   } catch (e) { console.error('restore failed', e.message); }
 }
+restore();       // after the persistence code above is defined (it uses secretHashes)
+bots.start();
 setInterval(snapshot, 30000);
 process.on('SIGINT', () => { snapshot(); process.exit(0); });
 process.on('SIGTERM', () => { snapshot(); process.exit(0); });
@@ -160,7 +163,8 @@ io.on('connection', socket => {
       // new account (or one lost in a restart before it was saved): keep the device's secret if it sent one
       secret = typeof p.secret === 'string' && p.secret.length >= 24 && p.secret.length <= 64 ? p.secret : newSecret();
     }
-    const res = engine.login(p);
+    let res;
+    try { res = engine.login(p); } catch (e) { console.error('auth error', e); return ack && ack({ ok: false, error: 'Something went wrong signing in' }); }
     if (!res.ok) return ack && ack(res);
     if (!existing) secretHashes.set(res.user.id, hashSecret(secret));
     userId = res.user.id;
@@ -169,7 +173,7 @@ io.on('connection', socket => {
     socketsByUser.get(userId).add(socket);
     bots.onUserLogin(userId);
     syncRoom(socket, userId);
-    ack && ack(Object.assign(res, { secret: secret || undefined, iceServers: ICE_SERVERS, serverTime: Date.now(), gifts: engine.giftCatalog, banners: engine.banners }));
+    ack && ack(Object.assign(res, { secret: secret || undefined, iceServers: ICE_SERVERS, freeRecharge: FREE_RECHARGE, serverTime: Date.now(), gifts: engine.giftCatalog, banners: engine.banners }));
   });
 
   socket.on('act', (msg, ack) => {

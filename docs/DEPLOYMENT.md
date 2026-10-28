@@ -48,9 +48,18 @@ The single-file demo `dist/classic-friends-demo.html` (`npm run build:demo`) can
 | Name | Default | Meaning |
 |---|---|---|
 | `PORT` | `3000` | HTTP port |
-| `ADMIN_TOKEN` | `classicfriends-admin` | Admin console / API token — **change it** |
+| `ADMIN_TOKEN` | `classicfriends-admin` | Admin console / API token — **change it**. With `NODE_ENV=production` the admin API returns 503 until it is set to 16+ characters (the default is refused) |
 | `BOTS` | `70` | Simulated people (0 = none) |
 | `START_COINS` | `1000` | Coins for a new account |
+| `NODE_ENV` | — | `production` (set by the Dockerfile and pm2 file) enables the admin-token lock and turns free coin packs off |
+| `DATA_FILE` | `server/data/users.json` | Where real users (and hashed device secrets) are saved |
+| `FREE_RECHARGE` | on in dev, off in production | `1` = coin packs are credited **without payment** (testing only). Off → the wallet says payments aren't available. Connect a gateway webhook that calls `engine.recharge` before selling coins |
+| `STUN_URLS` | Google STUN ×2 | Comma-separated STUN URLs sent to every client at sign-in |
+| `TURN_URLS`, `TURN_USERNAME`, `TURN_CREDENTIAL` | — | TURN relay for voice (coturn, Twilio, Cloudflare, Metered…). **Needed in production**: without it, voice fails for a share of users on mobile data / strict networks |
+
+> docker-compose.yml ships `ADMIN_TOKEN: change-me-now`, which is too short for production — replace it with a long random value or the admin console stays locked.
+
+Accounts: the first sign-in on a device gets a random secret (kept in the browser's storage, only a SHA-256 hash on the server). Signing in again — refresh, reconnect — needs that secret, so knowing someone's user id is not enough to take over the account. Clearing browser storage loses the account on that device; add phone OTP / Google sign-in for account recovery.
 
 Copy `.env.example` to `.env` next to `package.json` — the server reads it at start-up (no extra tooling) — or set the values in your host's dashboard. `deploy/setup-ubuntu.sh` creates `.env` for you.
 

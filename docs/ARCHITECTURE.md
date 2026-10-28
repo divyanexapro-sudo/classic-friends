@@ -59,7 +59,7 @@ Routing is hash-based (`#/room/123`, `#/profile/42`, `#/chat/42`, `#/friends?tab
 
 ## Voice
 
-Rule: **whoever sits on a mic opens a one-way audio connection to every other person in the room.** Listeners never initiate. Offers/answers/ICE travel through `rtc:signal` on the server; STUN servers are listed in `app/js/config.js`.
+Rule: **whoever sits on a mic opens a one-way audio connection to every other person in the room.** A listener asks every seated speaker for audio (`{ want }`) when it enters a room, after a refresh/reconnect, and (with backoff) after a connection fails; the speaker answers by (re)creating its connection. A new speaker connects to everyone itself. Each offer carries a session id so stale candidates are ignored. Offers/answers/ICE travel through `rtc:signal`, which the server relays only between two people in the same room. ICE servers (STUN + optional TURN) come from the server env at sign-in; `app/js/config.js` STUN is the fallback. The first WebRTC connection in a page costs 1–4 s of browser start-up, so `Voice.warmup()` pays it behind the splash screen.
 
 Cost: with S speakers and N people in the room there are S × (N − 1) connections. Comfortable up to roughly 8 speakers × 30 listeners on normal phones and networks. Beyond that, keep the whole product and swap only `voice/webrtc.js` for an SFU:
 
@@ -82,7 +82,8 @@ Today the engine keeps state in memory; real users are snapshotted to `server/da
 * The server only executes whitelisted action names and strips client-supplied privilege flags (`approved`, `admin`).
 * All text is cleaned, length-capped and run through the word filter in the engine; the client escapes everything it renders.
 * Admin API needs the `x-admin-token` header (`ADMIN_TOKEN` env). Put the admin console behind HTTPS and a VPN/IP allow-list in production.
-* Add real authentication (OTP / Google) before launch — today a device can claim any name; the stored `id` is what identifies the account.
+* Each account has a device secret (hash stored server-side); the public user id alone cannot sign in. Add OTP / Google sign-in before launch for account recovery across devices.
+* Actions are rate-limited per socket (~30/s). Coin packs are only credited without payment when `FREE_RECHARGE` is on (default off in production).
 
 ## Events reference (engine → clients)
 

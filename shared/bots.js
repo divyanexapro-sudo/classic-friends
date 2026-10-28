@@ -137,7 +137,8 @@
     }
 
     /* ---------------- live loop ---------------- */
-    start() { if (this.timer) return this; this.timer = setInterval(() => this.tick(), 1100); return this; }
+    // same guard as later(): one bad record must not take the whole server down every 1.1 s
+    start() { if (this.timer) return this; this.timer = setInterval(() => { try { this.tick(); } catch (e) { console.error('bot tick', e); } }, 1100); return this; }
     stop() { clearInterval(this.timer); this.timer = null; for (const t of this.timers) clearTimeout(t); this.timers.clear(); }
     tick() {
       const E = this.engine; E.tick();
